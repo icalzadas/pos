@@ -14,8 +14,8 @@
       <x-dg-option value="val">camisa</x-dg-option>
   </x-dg-select2>-->
   
-  <!--<form method="" action="" enctype="multipart/form-data" id="frmVentas">-->
-  
+  <form method="" action="" enctype="multipart/form-data" id="frmVentas">
+  @csrf
   <!--FILA SUCURSAL Y TIPO DE PRECIO-->
   <div class="form-group form-row">
     <!--SUCURSAL-->
@@ -65,13 +65,13 @@
     <div class="form-group col-md-6">
       <div class="input-group mb-3">
       
-        <div class="input-group-prepend">
-          <div class="input-group-text bg-transparent border-right-0">
-            <span class="far fa-address-card "></span>
+        <!--<div class="input-group-prepend">
+          <div class="input-group-text bg-transparent">
+            <i class="far fa-address-card "></i>
           </div>
-        </div>
+        </div>-->
         
-        <select name="id_cliente" id="id_cliente" class="custom-select" title="">
+        <select name="id_cliente" id="id_cliente" class="custom-select" title="Selecciona cliente">
           @foreach($clientes as $c)
             <option value="{{$c->id}}">{{$c->nombre." ".$c->materno}}</option>
           @endforeach    
@@ -112,6 +112,7 @@
       <thead class="">
       
       <tr>
+      <th scope="col" >ID Producto</th>
       <th scope="col">Producto</th>
       <th scope="col" class="col-sm-2">Cantidad</th>
       <th scope="col">Precio</th>
@@ -126,7 +127,34 @@
       </table>
   </div><!--fin tabla ventas-->
 
-  <!--</form>-->
+  <!--informacion del pago-->
+  <div class="card text-center">
+    <div class="card-header">
+      Informacion de pago
+    </div>
+    <div class="card-body">      
+
+      <div class="row">
+        <div class="form-group col">
+          <label for="total_venta" class="col-form-label">Total a pagar:</label>
+          <input type="text" autocomplete="off" class="form-control" id="total_venta" name="total_venta" placeholder="" title="" readonly>  
+        </div>
+        <div class="form-group col">
+          <label for="efectivo_pago" class="col-form-label">Paga con:</label>
+          <input type="text" autocomplete="off" class="form-control" id="efectivo_pago" name="efectivo_pago" placeholder="" title="" onkeypress="return solonumeros(event);">  
+        </div>
+        <div class="form-group col">
+          <label for="cambio" class="col-form-label">Su cambio:</label>
+          <input type="text" autocomplete="off" class="form-control" id="cambio" name="cambio" placeholder="" title="" readonly>  
+        </div>
+      </div>
+
+      
+    </div>
+    
+  </div>
+
+  </form>
   
   <!--CARD OPCIONES DE COBRO-->
   <div class="card text-center">
@@ -174,22 +202,51 @@
         
 @section('js')
   <script type="text/javascript">
+    //solo numeros y tecla retroceso
+    function solonumeros(e) {
+      tecla = (document.all) ? e.keyCode : e.which;
+
+      //Tecla de retroceso para borrar, siempre la permite
+      if (tecla == 8) {
+        return true;
+      }
+
+      // Patron de entrada, en este caso solo acepta numeros
+      patron = /[0-9,.]/;
+      tecla_final = String.fromCharCode(tecla);
+      return patron.test(tecla_final);
+    }
+    
     $(document).ready(function() { 
-      
+      var total_venta = 0;
       const node = document.getElementById("producto");
+      const ep = document.getElementById("efectivo_pago");
+      const cambio = document.getElementById("cambio");
+      const tv = document.getElementById("total_venta");
+      
       //var producto = "";
+
+      ep.addEventListener("keyup", function(event) {
+        console.log(ep.value);
+        console.log(tv.value);
+        cambio.value = ep.value - tv.value;
+      });
+
+      
       
       //console.log(producto);
       //EVENTO KEYUP DEL INPUT PRODUCTO
       node.addEventListener("keyup", function(event) {
         if (event.key === "Enter") {
           event.preventDefault();
-          console.log(producto);
-          // Do more work
+          //console.log(producto);
+          // Do more work          
+
           if(document.getElementById("producto").value==""){
             Swal.fire("Seleccione un producto");
             return;
           } 
+
           
           //debo buscar la informacion del producto
           var formData = {
@@ -204,8 +261,8 @@
             dataType: "json",
             success: function(response){
               console.log("exito");
-              console.log(response)
-              console.log(response[0].producto);
+              //console.log(response)
+              //console.log(response[0].producto);
               /*Swal.fire({
                 position: 'center',
                 type: 'success',
@@ -221,17 +278,25 @@
               
               //si encuentra la data entonces llena la tabla
               $('#tblVentasBody').append('<tr>' +
+                '<td>' + '<input type="text" value="'+response[0].id + '" class="form-control" id="" name="id_producto_tabla[]" >' + '</td>' +
                 '<td>' + response[0].producto + '</td>' + 
-                '<td>' + '<input type="number" value="1" class="form-control" id="" name="" >' + '</td>' + 
-                '<td>' + response[0].precio_venta + '</td>' +
-                '<td>' + response[0].precio_venta + '</td>' + 
-                '<td>' + response[0].precio_venta + '</td>' +
+                '<td>' + '<input type="number" value="1" class="form-control" id="" name="cantidad[]" >' + '</td>' + 
+                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="precio_venta[]" >' + '</td>' +
+                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="subtotal[]" >' + '</td>' + 
+                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="total[]" >' + '</td>' +
                 '<td>' +                
                     '<a href="#" data-del_id_contacto="">' +
                         '<button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>' +
                     '</a>' +
                 '</td>' +
               '</tr>');
+
+              total_venta = total_venta + response[0].precio_venta;
+              //console.log("total venta abajo");
+              //console.log(total_venta);
+              //console.log(total_venta);
+              tv.value=total_venta;
+              document.getElementById("producto").value="";
                     
                                        
             },
@@ -297,7 +362,7 @@
 
       });
       
-      //$('#id_cliente').select2();
+      $('#id_cliente').select2();
       
       //pantalla completa
       function alterna_modo_de_pantalla() {
@@ -328,9 +393,89 @@
         }
       }, false);*/
 
+      //submit nuevo contacto customer
+      $("#frmVentas").submit(function (e) {
+        e.preventDefault();
+      });
 
       $('#btnEfectivo').on('click', function () {
-        alert('paga');
+        //console.log('paga');
+        //validaciones
+        var id_sucursal =  $('select[name=id_sucursal]').val();
+        var tot_venta = $("#total_venta").val();
+        var cambio = $("#cambio").val();
+        var efectivo_pago = $("#efectivo_pago").val();
+
+        if(id_sucursal==""){
+          $("#id_sucursal").focus();
+          Swal.fire("Selecciona una sucursal");
+          return;
+        }
+
+        if(tot_venta==""){  
+          $("#producto").focus();        
+          Swal.fire("No hay nada que cobrar");
+          return;
+        }
+
+        if(efectivo_pago==""){ 
+          $("#efectivo_pago").focus();         
+          Swal.fire("Con cuanto paga el cliente?");
+          return;
+        }
+
+        var formData = new FormData(document.getElementById('frmVentas'));
+        
+        $.ajax({
+          url:"{{route('store_ventas')}}",
+          type:'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response){
+            console.log("exito venta");
+            console.log(response);
+            total_venta = 0;
+            tv.value="";
+            Swal.fire({
+                position: 'center',
+                type: 'success',
+                title: 'Venta exitosa',
+                showConfirmButton: false,
+                timer: 2500
+                
+            }).then(() => { 
+                //console.log('triggered redirect here');
+                //limpiar();
+                //window.location.href = "{{ url("/") }}/customers"; 
+                $("#tblVentasBody").children().remove() 
+                $("#frmVentas")[0].reset();
+                //total_venta = 0;
+            }); 
+                    
+                                       
+          },
+          error: function(err) {
+            console.log(err);
+            if(err.status)
+            {
+              Swal.fire({
+                  position: 'center',
+                  type: 'error',
+                  title: `${err.responseJSON.message}`,
+                  showConfirmButton: true
+              })
+            }else{
+              Swal.fire({
+              position: 'center',
+              type: 'error',
+              title: 'Venta no registrada',
+              showConfirmButton: true
+              })
+            }
+                        
+          }
+        });
       });
 
 

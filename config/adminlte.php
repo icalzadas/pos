@@ -315,19 +315,44 @@ return [
             'topnav' => true,
         ], 
         [
-            'text' => 'Categorias',
-            'url'  => 'categorias',
-            'icon' => 'fab fa-cuttlefish',
-        ],       
+            'text' => 'Catalogos',
+            'icon' => 'fas fa-book-reader',
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'url'  => 'clientes',
+                    'icon' => 'far fa-address-card',
+                ], 
+                [
+                    'text' => 'Categorias',
+                    'url'  => 'categorias',
+                    'icon' => 'fab fa-cuttlefish',
+                ],       
+                [
+                    'text' => 'Productos',
+                    'url'  => 'productos',
+                    'icon' => 'fab fa-product-hunt',
+                ],
+                
+            ],
+            
+        ], 
+        
         [
-            'text' => 'Productos',
-            'url'  => 'productos',
-            'icon' => 'fab fa-product-hunt',
-        ],
-        [
-            'text' => 'Ventas',
-            'url'  => 'ventas',
+            'text' => 'Ventas',            
             'icon' => 'fas fa-dollar-sign',
+            'submenu' => [
+                [
+                    'text' => 'Terminal POS',
+                    'url'  => 'ventas/pos',
+                    'icon' => 'fas fa-hand-holding-usd',
+                ],                
+                [
+                    'text' => 'Listado de ventas',
+                    'icon' => 'fas fa-list-ol',
+                    'url'  => 'ventas/listado',
+                ],
+            ],
         ],
         [
             'text' => 'Caja',

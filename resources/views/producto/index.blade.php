@@ -50,7 +50,7 @@
             <!--<a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fas fa-file-alt fa-1x"></i>&nbsp;Nuevo Producto</button></a>&nbsp&nbsp;-->
             
             <div class="table-responsive">
-				<table class="table table-striped table-bordered" id="tblProductos">
+				<table class="table table-sm table-striped table-bordered" id="tblProductos">
 					<thead class="thead-dark">
 						<tr>
                             <th scope="col">Categoria</th>

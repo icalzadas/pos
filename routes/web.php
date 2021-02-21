@@ -40,7 +40,15 @@ Route::post('categorias/actualizar', [App\Http\Controllers\CategoriaController::
 Route::post('categorias/eliminar', [App\Http\Controllers\CategoriaController::class, 'eliminar'])->name('eliminar_categoria');
 
 //VENTAS
-Route::get('ventas', [App\Http\Controllers\VentaController::class, 'index'])->name('index_ventas');
+Route::get('ventas/pos', [App\Http\Controllers\VentaController::class, 'index'])->name('index_ventas');
+Route::post('ventas/store', [App\Http\Controllers\VentaController::class, 'store'])->name('store_ventas');
+Route::get('ventas/listado', [App\Http\Controllers\VentaController::class, 'listado'])->name('listado_ventas');
+
+//CLIENTES
+Route::resource('clientes', 'App\Http\Controllers\ClienteController');
+Route::post('clientes/actualizar', [App\Http\Controllers\ClienteController::class, 'actualizar'])->name('actualizar_cliente');
+Route::post('clientes/eliminar', [App\Http\Controllers\ClienteController::class, 'eliminar'])->name('eliminar_cliente');
+
 
 
 
