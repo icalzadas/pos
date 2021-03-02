@@ -53,13 +53,17 @@
 				<table class="table table-sm table-striped table-bordered" id="tblProductos">
 					<thead class="thead-dark">
 						<tr>
+                        <th scope="col">Sucursal</th>
                             <th scope="col">Categoria</th>
 							<th scope="col" style="display:none;">ID Producto</th>
+                            <th scope="col" style="display:none;">Codigo de barras</th>
 							<th scope="col">Producto</th>
                             <th scope="col">SKU</th>
                             <th scope="col">Precio Costo</th>
                             <th scope="col">Precio Venta</th>
                             <th scope="col">Precio Mayoreo</th>
+                            <th scope="col">Minimo</th>
+                            <th scope="col">Maximo</th>
 
                             <th scope="col">Talla</th>
                             <th scope="col">Modelo</th>
@@ -71,13 +75,17 @@
 					<tbody>
 						@foreach($productos as $p)
 							<tr>
+                                <td>{{$p->sucursal}}</td>
                                 <td>{{$p->categoria}}</td>
 								<td style="display:none;">{{$p->id}}</td>
+                                <td style="display:none;">{{$p->codigo_barras}}</td>
                                 <td>{{$p->producto}}</td>
                                 <td>{{$p->sku}}</td>
                                 <td>{{$p->precio_costo}}</td>
                                 <td>{{$p->precio_venta}}</td>
                                 <td>{{$p->precio_mayoreo}}</td>
+                                <td>{{$p->minimo}}</td>
+                                <td>{{$p->maximo}}</td>
                                 <td>{{$p->talla}}</td>
                                 <td>{{$p->modelo}}</td>
                                 <td>{{$p->color}}</td>
@@ -89,7 +97,7 @@
                                 @endif
 
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_editar_producto" data-id_producto="{{$p->id}}" data-id_categoria="{{$p->id_categoria}}" data-producto="{{$p->producto}}" data-sku="{{$p->sku}}" data-codigo_barras="{{$p->codigo_barras}}" data-precio_costo="{{$p->precio_costo}}" data-precio_venta="{{$p->precio_venta}}" data-precio_mayoreo="{{$p->precio_mayoreo}}" data-minimo="{{$p->minimo}}" data-maximo="{{$p->maximo}}" data-talla="{{$p->talla}}" data-modelo="{{$p->modelo}}" data-color="{{$p->color}}" data-cantidad="{{$p->cantidad}}" data-status="{{$p->status}}">
+                                    <a href="#" data-toggle="modal" data-target="#modal_editar_producto" data-id_producto="{{$p->id}}" data-id_sucursal="{{$p->id_sucursal}}" data-id_categoria="{{$p->id_categoria}}" data-producto="{{$p->producto}}" data-sku="{{$p->sku}}" data-codigo_barras="{{$p->codigo_barras}}" data-precio_costo="{{$p->precio_costo}}" data-precio_venta="{{$p->precio_venta}}" data-precio_mayoreo="{{$p->precio_mayoreo}}" data-minimo="{{$p->minimo}}" data-maximo="{{$p->maximo}}" data-talla="{{$p->talla}}" data-modelo="{{$p->modelo}}" data-color="{{$p->color}}" data-cantidad="{{$p->cantidad_inicial}}" data-status="{{$p->status}}">
                                         <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
                                     </a>
                                     <a href="#" data-toggle="modal" data-target="#modal_eliminar_producto" data-id_producto="{{$p->id}}">
@@ -115,6 +123,35 @@
 
 @section('js')
     <script type="text/javascript">
+        //solo numeros y tecla retroceso
+        function solonumeros(e) {
+            tecla = (document.all) ? e.keyCode : e.which;
+
+            //Tecla de retroceso para borrar, siempre la permite
+            if (tecla == 8) {
+                return true;
+            }
+
+            // Patron de entrada, en este caso solo acepta numeros
+            patron = /[0-9]/;
+            tecla_final = String.fromCharCode(tecla);
+            return patron.test(tecla_final);
+        }
+
+        //solo numeros tecla retroceso y punto decimal
+        function solonumerosdecimal(e) {
+            tecla = (document.all) ? e.keyCode : e.which;
+
+            //Tecla de retroceso para borrar, siempre la permite
+            if (tecla == 8) {
+                return true;
+            }
+
+            // Patron de entrada, en este caso solo acepta numeros
+            patron = /[0-9,.]/;
+            tecla_final = String.fromCharCode(tecla);
+            return patron.test(tecla_final);
+        }
         $(document).ready(function() {
             //console.log("hola");
             $('[data-toggle="tooltip"]').tooltip(); 
@@ -147,6 +184,7 @@
                 
                 var button = $(event.relatedTarget) 
                 
+                var id_sucursal = button.data('id_sucursal')
                 var id_producto = button.data('id_producto') 
                 var id_categoria =  button.data('id_categoria')      
                 var producto = button.data('producto')
@@ -186,6 +224,7 @@
                 
                 //modal.find('#edit_status').val(status)
                 $("#edit_status option[value='"+status+"']").attr("selected", true);
+                $("#edit_id_sucursal option[value='"+id_sucursal+"']").attr("selected", true);
                             
             });
 

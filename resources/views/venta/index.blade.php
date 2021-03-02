@@ -6,7 +6,10 @@
     ...
 </x-dg-card>-->
 
-<x-dg-card title="Terminal POS" bg="primary" :outline="true" :full="false" :collapsed="false" :maximizable="false" :removable="false" :disabled="false">
+@if($estatus_caja_user==1)
+
+
+<x-dg-card title="Terminal POS - {{$nombre_caja}}" bg="primary" :outline="true" :full="false" :collapsed="false" :maximizable="false" :removable="false" :disabled="false">
 
   <!--<x-dg-select2 id="myID">
       <x-dg-option value="val">pantalon</x-dg-option>
@@ -16,6 +19,11 @@
   
   <form method="" action="" enctype="multipart/form-data" id="frmVentas">
   @csrf
+
+  <!--id de la tabla operaciones_caja, sirve para guardar las ventas respectivas a la caja abierta-->
+  <input type="hidden" autocomplete="off" class="form-control" id="id_operacion_caja" name="id_operacion_caja" value="{{$id_operacion_caja}}">
+  <input type="hidden" autocomplete="off" class="form-control" id="tipo_pago" name="tipo_pago" >
+
   <!--FILA SUCURSAL Y TIPO DE PRECIO-->
   <div class="form-group form-row">
     <!--SUCURSAL-->
@@ -37,30 +45,8 @@
         </select> 
 
       </div>    
-    </div>
+    </div>    
 
-    <!--TIPO DE PRECIO-->
-    <div class="form-group col-md-6">
-      <div class="input-group mb-3">
-      
-        <div class="input-group-prepend">
-          <div class="input-group-text bg-transparent border-right-0">
-            <span class="fas fa-money-check-alt"></span>
-          </div>
-        </div>
-        <select name="tipo_precio" id="tipo_precio" class="custom-select" title="Tipo de precio">
-          <option value="" selected>Precio publico en general</option>
-          <option value="" >Precio mayoreo</option>
-          <option value="" >Donacion</option>            
-                                          
-        </select> 
-
-      </div>    
-    </div>
-  </div>
-
-  <!--FILA CLIENTE Y PRODUCTO-->
-  <div class="form-group form-row">
     <!--CLIENTE-->
     <div class="form-group col-md-6">
       <div class="input-group mb-3">
@@ -80,6 +66,27 @@
 
       </div>    
     </div>
+  </div>
+
+  <!--FILA CLIENTE Y PRODUCTO-->
+  <div class="form-group form-row">
+    <!--TIPO DE PRECIO-->
+    <div class="form-group col-md-6">
+      <div class="input-group mb-3">
+      
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-transparent border-right-0">
+            <span class="fas fa-money-check-alt"></span>
+          </div>
+        </div>
+        <select name="tipo_precio" id="tipo_precio" class="custom-select" title="Tipo de precio">
+          <option value="general" selected>Precio publico en general</option>
+          <option value="mayoreo" >Precio mayoreo</option>                     
+                                          
+        </select> 
+
+      </div>    
+    </div>
 
     <!--PRODUCTO-->
     <div class="form-group col-md-6">
@@ -93,9 +100,7 @@
         <input type="hidden" autocomplete="off" class="form-control" id="id_producto" name="id_producto" >
         <input type="text" autocomplete="off" class="form-control" id="producto" name="producto" placeholder="Ingresa nombre de Producto / SKU / Codigo de barras" title="Producto" required>
         <!--<select name="producto" id="producto" class="custom-select" title="">
-          @foreach($productos as $pr)
-            <option value="{{$pr->id}}">{{$pr->producto." ( ".$pr->sku." ) "}}</option>
-          @endforeach    
+             
                                           
         </select> --> 
         <!--<div class="input-group-append">
@@ -103,6 +108,13 @@
         </div>-->
 
       </div>    
+    </div>
+  </div>
+
+  <div class="form-group form-row">
+    <div class="form-group col-auto">                                                  
+        <button type="button" class="btn btn-success" id="btnAgregarProducto"><i class="fas fa-plus fa-1x"></i>&nbsp;Agregar producto</button>                                                  
+                                                  
     </div>
   </div>
 
@@ -114,7 +126,7 @@
       <tr>
       <th scope="col" >ID Producto</th>
       <th scope="col">Producto</th>
-      <th scope="col" class="col-sm-2">Cantidad</th>
+      <th scope="col" class="">Cantidad</th>
       <th scope="col">Precio</th>
       <th scope="col">Subtotal</th>
       <th scope="col">Total</th>
@@ -166,7 +178,7 @@
       <p class="card-text"></p>
 
       <div class="row">
-        <div class="col">
+        <div class="col-6">
           <button title="" id="btnEfectivo" type="button" class="btn btn-success btn-block btn-flat btn-lg">
             
             <div class="text-center">
@@ -176,10 +188,16 @@
           </button>
         </div>
         <div class="col-6">
-          otro metodo de pago...
+          <button title="" id="btnCredito" type="button" class="btn btn-warning btn-block btn-flat btn-lg">
+            
+            <div class="text-center">
+              <i class="fa fa-check" aria-hidden="true"></i>
+              <b>Credito</b>
+            </div>
+          </button>
         </div>
         <div class="col">
-          otro metodo de pago...
+          
         </div>
       </div>
 
@@ -195,7 +213,29 @@
   </button> -->                               
 
 </x-dg-card>
+@else
 
+<div class="card card-default">
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="fas fa-exclamation-triangle"></i>
+        Caja cerrada
+    </h3>
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <div class="alert alert-danger alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5><i class="icon fas fa-ban"></i> Caja cerrada!</h5>
+      Pide al admin la apertura de caja correspondiente
+    </div>
+                
+  </div>
+  <!-- /.card-body -->
+  </div>
+
+
+@endif
 
 @endsection   
         
@@ -216,6 +256,51 @@
       tecla_final = String.fromCharCode(tecla);
       return patron.test(tecla_final);
     }
+
+    //hace los calculos instantaneos en la tabla de los productos
+    function Calcular(ele) {
+
+      var cantidad = 0, precunit = 0, totalitem = 0, sumatotal=parseFloat(document.getElementById("total_venta").value);
+      var tr = ele.parentNode.parentNode;
+      //console.log("calcular")
+      //console.log(sumatotal)
+
+      $(tr).each(function() {
+
+        //totalitem_aux = $(this).find("td:eq(5) > input").val();
+
+        var totalitem = $(this).find("td:eq(2) > input").val()/*cantidad*/  * $(this).find("td:eq(3) > input").val();//precio unitario; 
+
+        $(this).find("td:eq(5) > input").val(totalitem); //total
+        $(this).find("td:eq(4) > input").val(totalitem);  //subtotal
+
+        //console.log(totalitem_aux)
+        //console.log(totalitem)
+
+        /*if(totalitem<totalitem_aux){
+          sumatotal=sumatotal-parseFloat($(this).find("td:eq(3) > input").val());
+        }else if(totalitem==totalitem_aux){
+          sumatotal=sumatotal;
+        }else{
+          sumatotal=sumatotal+parseFloat($(this).find("td:eq(3) > input").val());
+        }*/
+
+        
+      });
+
+      var sum = 0;
+      $('.total').each(function() {
+        sum += parseFloat($(this).val());
+      });
+      
+      //console.log("summmmm")
+      //console.log(sum)
+
+      //console.log("calcular")
+      //console.log(sumatotal)
+
+      document.getElementById("total_venta").value = sum;
+    }
     
     $(document).ready(function() { 
       var total_venta = 0;
@@ -226,13 +311,12 @@
       
       //var producto = "";
 
+      //MANEJA EL CAMBIO AL CLIENTE
       ep.addEventListener("keyup", function(event) {
         console.log(ep.value);
         console.log(tv.value);
         cambio.value = ep.value - tv.value;
-      });
-
-      
+      });      
       
       //console.log(producto);
       //EVENTO KEYUP DEL INPUT PRODUCTO
@@ -240,13 +324,13 @@
         if (event.key === "Enter") {
           event.preventDefault();
           //console.log(producto);
-          // Do more work          
+          // Do more work 
+          var tipo_precio =  $('#tipo_precio').val();        
 
           if(document.getElementById("producto").value==""){
             Swal.fire("Seleccione un producto");
             return;
           } 
-
           
           //debo buscar la informacion del producto
           var formData = {
@@ -261,43 +345,50 @@
             dataType: "json",
             success: function(response){
               console.log("exito");
-              //console.log(response)
-              //console.log(response[0].producto);
-              /*Swal.fire({
-                position: 'center',
-                type: 'success',
-                title: 'Customer creado correctamente',
-                showConfirmButton: false,
-                timer: 2500
-                        
-              }).then(() => { 
-                //console.log('triggered redirect here');
-                limpiar();
-                window.location.href = "{{ url("/") }}/customers";  
-              }); */
+
+              if(tipo_precio=="general"){
+                precio = response[0].precio_venta;
+
+              } else if(tipo_precio=="mayoreo"){
+                precio = response[0].precio_mayoreo;
+                if(precio == null || precio==""){
+                  Swal.fire("El producto seleccionado no cuenta con precio por mayoreo");
+                  return;
+                }
+              } else{
+                precio = response[0].precio_venta;
+              }            
               
               //si encuentra la data entonces llena la tabla
               $('#tblVentasBody').append('<tr>' +
-                '<td>' + '<input type="text" value="'+response[0].id + '" class="form-control" id="" name="id_producto_tabla[]" >' + '</td>' +
+                '<td>' + '<input readonly type="text" value="'+response[0].id + '" class="form-control"  name="id_producto_tabla[]" >' + '</td>' +
                 '<td>' + response[0].producto + '</td>' + 
-                '<td>' + '<input type="number" value="1" class="form-control" id="" name="cantidad[]" >' + '</td>' + 
-                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="precio_venta[]" >' + '</td>' +
-                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="subtotal[]" >' + '</td>' + 
-                '<td>' + '<input type="text" value="'+response[0].precio_venta + '" class="form-control" id="" name="total[]" >' + '</td>' +
+                '<td>' + '<input type="number" value="1" class="form-control"  name="cantidad[]" onChange="Calcular(this)" onKeyup="Calcular(this)" min="1">' + '</td>' + 
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control"  name="precio_venta[]" >' + '</td>' +
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control subtotal"  name="subtotal[]" >' + '</td>' + 
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control total"  name="total[]" >' + '</td>' +
                 '<td>' +                
-                    '<a href="#" data-del_id_contacto="">' +
+                    '<a href="#" >' +
                         '<button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>' +
                     '</a>' +
                 '</td>' +
               '</tr>');
 
-              total_venta = total_venta + response[0].precio_venta;
+              total_venta = parseFloat(total_venta) + parseFloat(precio);
               //console.log("total venta abajo");
               //console.log(total_venta);
               //console.log(total_venta);
-              tv.value=total_venta;
+              
+              console.log(tv.value)
+              if(tv.value==null || tv.value==""){
+                console.log("epa null")
+                tv.value=0;
+              }
+              console.log(tv.value) 
+
+              tv.value=parseFloat(tv.value)+parseFloat(total_venta);
               document.getElementById("producto").value="";
-                    
+              total_venta = 0;      
                                        
             },
             error: function(err) {
@@ -314,7 +405,7 @@
                 Swal.fire({
                 position: 'center',
                 type: 'error',
-                title: 'Customer no registrado',
+                title: 'Venta no registrada',
                 showConfirmButton: true
                 })
               }
@@ -339,7 +430,8 @@
           data: {
 
             _token: "{{ csrf_token() }}",
-            search: request.term
+            search: request.term,
+            id_sucursal: $('#id_sucursal').val()
           },
 
           success: function( data ) {
@@ -356,7 +448,7 @@
           $('#producto').val(ui.item.label);
           $('#id_producto').val(ui.item.value);
           //producto = document.getElementById("producto").value; 
-          //console.log(producto);
+          console.log('sucursal:'+$('#id_sucursal').val());
           return false;
         }
 
@@ -398,6 +490,97 @@
         e.preventDefault();
       });
 
+      $('#btnAgregarProducto').on('click', function () {
+          var tipo_precio =  $('#tipo_precio').val(); 
+
+          if(document.getElementById("producto").value==""){
+            Swal.fire("Seleccione un producto");
+            return;
+          } 
+
+          
+          //debo buscar la informacion del producto
+          var formData = {
+            _token: "{{ csrf_token() }}",
+            id_producto : $('#id_producto').val()
+          }
+
+          $.ajax({
+            url:"{{route('getProductInfo')}}",
+            type:'post',
+            data: formData,
+            dataType: "json",
+            success: function(response){
+              console.log("exito");              
+
+              if(tipo_precio=="general"){
+                precio = response[0].precio_venta;
+
+              } else if(tipo_precio=="mayoreo"){
+                precio = response[0].precio_mayoreo;
+                if(precio == null || precio==""){
+                  Swal.fire("El producto seleccionado no cuenta con precio por mayoreo");
+                  return;
+                }
+              } else{
+                precio = response[0].precio_venta;
+              } 
+              
+              //si encuentra la data entonces llena la tabla
+              $('#tblVentasBody').append('<tr>' +
+                '<td>' + '<input readonly type="text" value="'+response[0].id + '" class="form-control" name="id_producto_tabla[]" >' + '</td>' +
+                '<td>' + response[0].producto + '</td>' + 
+                '<td>' + '<input type="number" value="1" class="form-control"  name="cantidad[]" onChange="Calcular(this)" onKeyup="Calcular(this)" min="1">' + '</td>' + 
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control"  name="precio_venta[]" >' + '</td>' +
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control subtotal"  name="subtotal[]" >' + '</td>' + 
+                '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control total"  name="total[]" >' + '</td>' +
+                '<td>' +                
+                    '<a href="#" >' +
+                        '<button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>' +
+                    '</a>' +
+                '</td>' +
+              '</tr>');
+
+              total_venta = parseFloat(total_venta) + parseFloat(precio);
+              //console.log("total venta abajo");
+              //console.log(total_venta);
+              //console.log(total_venta);
+              
+              console.log(tv.value)
+              if(tv.value==null || tv.value==""){
+                console.log("epa null")
+                tv.value=0;
+              }
+              console.log(tv.value) 
+
+              tv.value=parseFloat(tv.value)+parseFloat(total_venta);
+              document.getElementById("producto").value="";
+              total_venta = 0;      
+                                       
+            },
+            error: function(err) {
+              console.log(err);
+              if(err.status)
+              {
+                Swal.fire({
+                    position: 'center',
+                    type: 'error',
+                    title: `${err.responseJSON.message}`,
+                    showConfirmButton: true
+                })
+              }else{
+                Swal.fire({
+                position: 'center',
+                type: 'error',
+                title: 'Venta no registrada',
+                showConfirmButton: true
+                })
+              }
+                        
+            }
+          }); //FIN PETICION AJAX    
+      });
+
       $('#btnEfectivo').on('click', function () {
         //console.log('paga');
         //validaciones
@@ -405,6 +588,9 @@
         var tot_venta = $("#total_venta").val();
         var cambio = $("#cambio").val();
         var efectivo_pago = $("#efectivo_pago").val();
+
+        //envio el tipo de pago con la palabra Efectivo, este ya debe existir en la tabla tipos_pago
+        $("#tipo_pago").val("Efectivo");
 
         if(id_sucursal==""){
           $("#id_sucursal").focus();
@@ -421,6 +607,12 @@
         if(efectivo_pago==""){ 
           $("#efectivo_pago").focus();         
           Swal.fire("Con cuanto paga el cliente?");
+          return;
+        }
+
+        if(parseFloat(efectivo_pago)<parseFloat(tot_venta)){
+          $("#efectivo_pago").focus();         
+          Swal.fire("El total a pagar es mayor al efectivo ingresado");
           return;
         }
 

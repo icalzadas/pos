@@ -59,6 +59,25 @@
                                                 
                                             </div>                                                                         
                                                                
+                                        </div>
+
+                                        <div class="form-group form-row">                                  
+                                       
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Codigo Postal" aria-describedby="edit_cp" id="edit_cp" name="edit_cp" placeholder="Codigo Postal"  maxlength="5" value="{{ old('cp') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Telefono" aria-describedby="edit_telefono" id="edit_telefono" name="edit_telefono" placeholder="Telefono"  maxlength="15" value="{{ old('telefono') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="RFC" aria-describedby="edit_rfc" id="edit_rfc" name="edit_rfc" placeholder="RFC"  maxlength="13" value="{{ old('rfc') }}">
+                                                
+                                            </div>                                                                         
+                                                               
                                         </div> 
 
                                         <div class="form-group form-row">

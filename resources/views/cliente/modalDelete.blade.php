@@ -22,7 +22,7 @@
                                     <form method="POST" action="{{route('eliminar_cliente')}}" enctype="multipart/form-data">
                                     @csrf                                                       
                                         
-                                        <input type="text" name="del_id_cliente" id="del_id_cliente" value="">
+                                        <input type="hidden" name="del_id_cliente" id="del_id_cliente" value="">
                                         <div class="form-group form-row">
                                             <div class="form-group col-md-6">
                                                 

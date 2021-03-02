@@ -11,6 +11,11 @@ use App\Models\Sucursal;
 use App\Models\Venta;
 use App\Models\DetalleVenta;
 use App\Models\PermisosSucursales;
+use App\Models\OperacionesCaja;
+use App\Models\Caja;
+use App\Models\TiposPago;
+use App\Models\Stock;
+use App\Models\MovimientoStock;
 use Carbon\Carbon;
 
 class VentaController extends Controller
@@ -29,9 +34,27 @@ class VentaController extends Controller
                           
         $clientes = Cliente::all();  
         
-        $productos = Productos::all();
+        //$productos = Productos::all();
+
+        //debo determinar si el usuario que va accesar a terminal pos tiene una caja asignada y abierta
+        $caja_abierta = OperacionesCaja::where('id_user',$id_usuario)->where('estatus',1)->select('estatus','id_caja','id')->first();
+        if($caja_abierta!=null){
+            $estatus_caja_user = $caja_abierta->estatus;
+            $id_caja = $caja_abierta->id_caja;
+
+            $nombre_caja_aux = Caja::where('id',$id_caja)->first();
+            $nombre_caja = $nombre_caja_aux->caja;
+
+            $id_operacion_caja = $caja_abierta->id;
+
+            return view('venta.index',compact('sucursales','clientes','estatus_caja_user','nombre_caja','id_operacion_caja'));
+        }else{
+            $estatus_caja_user = 0;
+            return view('venta.index',compact('sucursales','clientes','estatus_caja_user'));
+        }
+                
         
-        return view('venta.index',compact('sucursales','clientes','productos'));
+        
     }
 
     public function store(Request $request)
@@ -41,12 +64,17 @@ class VentaController extends Controller
         
         $fecha_venta = Carbon::now();
 
+        $tipo_pago_aux = TiposPago::where('tipo_pago',$request->tipo_pago)->first();
+        $id_tipo_pago = $tipo_pago_aux->id;
+
+
         //guardo la venta
         $venta = Venta::create([
             'id_sucursal' =>$request->id_sucursal,
             'id_cliente' =>$request->id_cliente,
             'id_user' =>$id_usuario,
-            'id_tipo_pago' =>1,
+            'id_tipo_pago' =>$id_tipo_pago,
+            'id_operacion_caja' => $request->id_operacion_caja,
             'fecha_venta' =>$fecha_venta,            
             'efectivo' =>$request->efectivo_pago,
             'cambio' =>$request->cambio,
@@ -73,8 +101,26 @@ class VentaController extends Controller
                 'subtotal' => $subtotal[$cont],//viene de la vista tabla en ventas
                 'total' => $total[$cont]
             ]);
+            
+            //actualizo stock
+            $stock = Stock::where('id_producto',$id_producto[$cont])->where('id_sucursal',$request->id_sucursal)->first();
+            $stock->cantidad = $stock->cantidad - $cantidad[$cont];
+            $stock->save(); 
+
+            //inserto en movimientos_stock
+            $ms = MovimientoStock::create([
+                'id_sucursal' => $request->id_sucursal,
+                'id_producto' => $id_producto[$cont],
+                'cantidad' =>  $cantidad[$cont],
+                'tipo_movimiento' => 'VENTA_PRODUCTO'
+            ]);            
+            
+            
             $cont++;    
         }
+
+        
+
 
         return response()->json([
             'message' => "Venta exitosa"
@@ -87,7 +133,7 @@ class VentaController extends Controller
         $user = \Auth::user();        
         $id_usuario = $user->id;
 
-        $users_sucursales = PermisosSucursales::where('id_user',$id_usuario)->get();
+        $users_sucursales = PermisosSucursales::where('id_user',$id_usuario)->select('id_sucursal')->get();
 
         $ventas = DB::table('ventas as v')
                     ->join('sucursales as s','v.id_sucursal','=','s.id')

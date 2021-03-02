@@ -4,10 +4,10 @@
 
 @section('content_header')
     <h1>Clientes</h1>
-    @if(session('message'))
+    <!--@if(session('message'))
         <div class="alert alert-success alert-block">
-            <div class="row"> <!-- add no-gutters to make it narrower -->
-            <div class="col-auto align-self-start"> <!-- or align-self-center -->
+            <div class="row"> 
+            <div class="col-auto align-self-start"> 
                 <div class="glyphicon glyphicon-exclamation-sign"></div>
                 <i class="fas fa-exclamation"></i>
             </div>
@@ -17,7 +17,7 @@
             </div>
             
         </div>
-    @endif
+    @endif-->
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -55,6 +55,14 @@
 							<th scope="col">Nombre</th>
                             <th scope="col">Paterno</th>                            
 							<th scope="col">Materno</th>
+
+                            <th scope="col">Calle</th>
+                            <th scope="col">Colonia</th>
+                            <th scope="col">Ciudad</th>
+                            <th scope="col">CP</th>
+                            <th scope="col">Telefono</th>
+                            <th scope="col">RFC</th>    
+
                             <th scope="col">Opciones</th>	
 						</tr>
 					</thead>
@@ -64,10 +72,17 @@
 								<td>{{$c->id}}</td>
                                 <td>{{$c->nombre}}</td>
                                 <td>{{$c->paterno}}</td> 
-                                <td>{{$c->materno}}</td>                               
+                                <td>{{$c->materno}}</td> 
+
+                                <td>{{$c->calle}}</td>
+                                <td>{{$c->colonia}}</td>
+                                <td>{{$c->ciudad}}</td>
+                                <td>{{$c->cp}}</td>
+                                <td>{{$c->telefono}}</td>
+                                <td>{{$c->rfc}}</td>                              
 
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_editar_cliente" data-id_cliente="{{$c->id}}" data-nombre="{{$c->nombre}}" data-paterno="{{$c->paterno}}" data-materno="{{$c->materno}}" data-calle="{{$c->calle}}" data-colonia="{{$c->colonia}}" data-ciudad="{{$c->ciudad}}">
+                                    <a href="#" data-toggle="modal" data-target="#modal_editar_cliente" data-id_cliente="{{$c->id}}" data-nombre="{{$c->nombre}}" data-paterno="{{$c->paterno}}" data-materno="{{$c->materno}}" data-calle="{{$c->calle}}" data-colonia="{{$c->colonia}}" data-ciudad="{{$c->ciudad}}" data-cp="{{$c->cp}}" data-telefono="{{$c->telefono}}" data-rfc="{{$c->rfc}}">
                                         <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
                                     </a>
                                     <a href="#" data-toggle="modal" data-target="#modal_eliminar_cliente" data-id_cliente="{{$c->id}}">
@@ -94,6 +109,17 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
+
+            @if(Session::has('message'))
+                toastr.options =
+                {
+                    "closeButton" : true,
+                    "progressBar" : true,
+                    "timeOut": "2000",
+                }
+                toastr.success("{{ session('message') }}");
+            @endif
+
             //console.log("hola");
             $('[data-toggle="tooltip"]').tooltip(); 
 
@@ -131,7 +157,11 @@
                 var materno = button.data('materno')
                 var calle = button.data('calle')
                 var colonia = button.data('colonia')
-                var ciudad = button.data('ciudad')                                                                                  
+                var ciudad = button.data('ciudad')
+
+                var cp = button.data('cp')
+                var telefono = button.data('telefono')
+                var rfc = button.data('rfc')                                                                                  
                 
                 var modal = $(this)
 
@@ -142,9 +172,11 @@
                 modal.find('#edit_materno').val(materno)
                 modal.find('#edit_calle').val(calle)
                 modal.find('#edit_colonia').val(colonia)
-                modal.find('#edit_ciudad').val(ciudad)                
-                
-                
+                modal.find('#edit_ciudad').val(ciudad)  
+
+                modal.find('#edit_cp').val(cp)
+                modal.find('#edit_telefono').val(telefono)
+                modal.find('#edit_rfc').val(rfc)      
                             
             });
 

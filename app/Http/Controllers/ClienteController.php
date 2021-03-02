@@ -34,6 +34,9 @@ class ClienteController extends Controller
             'calle'    => $request->calle,
             'colonia'    => $request->colonia,
             'ciudad'    => $request->ciudad,
+            'cp' => $request->cp,
+            'telefono' => $request->telefono,
+            'rfc' => $request->rfc,
             
         ]);
 
@@ -55,6 +58,10 @@ class ClienteController extends Controller
         $cliente->calle = $request->edit_calle;
         $cliente->colonia = $request->edit_colonia;
         $cliente->ciudad = $request->edit_ciudad;
+
+        $cliente->cp = $request->cp;
+        $cliente->telefono = $request->telefono;
+        $cliente->rfc = $request->rfc;
 
         $cliente->save();
 

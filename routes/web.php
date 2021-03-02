@@ -49,6 +49,13 @@ Route::resource('clientes', 'App\Http\Controllers\ClienteController');
 Route::post('clientes/actualizar', [App\Http\Controllers\ClienteController::class, 'actualizar'])->name('actualizar_cliente');
 Route::post('clientes/eliminar', [App\Http\Controllers\ClienteController::class, 'eliminar'])->name('eliminar_cliente');
 
+//CAJA
+Route::resource('caja', 'App\Http\Controllers\CajaController');
+Route::post('caja/open', [App\Http\Controllers\CajaController::class, 'open'])->name('open');
+Route::post('caja/close', [App\Http\Controllers\CajaController::class, 'close'])->name('close');
+
+//ALMACEN
+Route::resource('almacen', 'App\Http\Controllers\AlmacenController');
 
 
 

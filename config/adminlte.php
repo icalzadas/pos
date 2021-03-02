@@ -333,6 +333,11 @@ return [
                     'url'  => 'productos',
                     'icon' => 'fab fa-product-hunt',
                 ],
+                [
+                    'text' => 'Empleados',
+                    'url'  => '#',
+                    'icon' => 'fas fa-user-tie',
+                ],
                 
             ],
             
@@ -356,19 +361,20 @@ return [
         ],
         [
             'text' => 'Caja',
-            'url'  => 'admin/settings',
+            'url'  => 'caja',
             'icon' => 'fas fa-box',
+        ],
+        [
+            'text' => 'Almacen',
+            'url'  => 'almacen',
+            'icon' => 'fas fa-database',
         ],
         [
             'text' => 'Reportes',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-chart-bar',
         ],
-        [
-            'text' => 'Empleados',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-user-tie',
-        ],
+        
         
         
     ],

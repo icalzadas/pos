@@ -22,6 +22,23 @@
                                     @csrf  
                                         <div class="form-group form-row">
                                                                
+                                            <div class="form-group col-md-12">                            
+                                                <select data-toggle="tooltip" data-placement="top" title="Sucursal" aria-describedby="id_sucursal" name="id_sucursal" id="id_sucursal" class="form-control form-control-sm" required value="{{ old('id_sucursal') }}">
+                                                    
+                                                    @foreach($missucursales as $s)
+                                                    <option value="{{$s->id}}">{{$s->sucursal}}</option>
+                                                    @endforeach
+                                                    <option value="*" >Para todas las sucursales a las que tengo permiso...</option>
+                                                </select>
+                                                <small id="id_sucursal" class="form-text text-muted">
+                                                    *Obligatorio
+                                                </small>
+                                            </div>                                                             
+                                                               
+                                        </div>
+
+                                        <div class="form-group form-row">
+                                                               
                                             <div class="form-group col-md-6">                            
                                                 <select data-toggle="tooltip" data-placement="top" title="Categoria" aria-describedby="id_categoria" name="id_categoria" id="id_categoria" class="form-control form-control-sm" required value="{{ old('id_categoria') }}">
                                                     <option value="" selected>Selecciona Categoria...</option>
@@ -59,21 +76,21 @@
 
                                         <div class="form-group form-row">
                                             <div class="form-group col-md-4">                            
-                                                <input type="text" class="form-control form-control-sm" aria-describedby="precio_costo" data-toggle="tooltip" data-placement="top" title="Precio Costo" id="precio_costo" name="precio_costo" placeholder="Precio Costo" required value="{{ old('precio_costo') }}">
+                                                <input type="text" class="form-control form-control-sm" aria-describedby="precio_costo" data-toggle="tooltip" data-placement="top" title="Precio Costo" id="precio_costo" name="precio_costo" placeholder="Precio Costo" required value="{{ old('precio_costo') }}" onkeypress="return solonumerosdecimal(event);" maxlength="8">
                                                 <small id="precio_costo" class="form-text text-muted">
                                                     *Obligatorio
                                                 </small>
                                             </div>
                                        
                                             <div class="form-group col-md-4">                            
-                                                <input type="text" class="form-control form-control-sm" aria-describedby="precio_venta" data-toggle="tooltip" data-placement="top" title="Precio Venta" id="precio_venta" name="precio_venta" placeholder="Precio Venta" required value="{{ old('precio_venta') }}">
+                                                <input type="text" class="form-control form-control-sm" aria-describedby="precio_venta" data-toggle="tooltip" data-placement="top" title="Precio Venta" id="precio_venta" name="precio_venta" placeholder="Precio Venta" required value="{{ old('precio_venta') }}" onkeypress="return solonumerosdecimal(event);" maxlength="8">
                                                 <small id="precio_venta" class="form-text text-muted">
                                                     *Obligatorio
                                                 </small>
                                             </div>
 
                                             <div class="form-group col-md-4">                            
-                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Precio Mayoreo" id="precio_mayoreo" name="precio_mayoreo" placeholder="Precio Mayoreo" value="{{ old('precio_mayoreo') }}">
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Precio Mayoreo" id="precio_mayoreo" name="precio_mayoreo" placeholder="Precio Mayoreo" value="{{ old('precio_mayoreo') }}" onkeypress="return solonumerosdecimal(event);" maxlength="8">
                                             </div>
                                         </div>
 
@@ -93,15 +110,15 @@
 
                                         <div class="form-group form-row">
                                             <div class="form-group col-md-3">                            
-                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Minimo" id="minimo" name="minimo" placeholder="Minimo" value="{{ old('minimo') }}">
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Minimo" id="minimo" name="minimo" placeholder="Minimo" value="{{ old('minimo') }}" onkeypress="return solonumeros(event);" maxlength="6">
                                             </div>
                                        
                                             <div class="form-group col-md-3">                            
-                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Maximo" id="maximo" name="maximo" placeholder="Maximo" value="{{ old('maximo') }}">
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Maximo" id="maximo" name="maximo" placeholder="Maximo" value="{{ old('maximo') }}" onkeypress="return solonumeros(event);" maxlength="6">
                                             </div>
 
                                             <div class="form-group col-md-3">                            
-                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Cantidad" aria-describedby="cantidad" id="cantidad" name="cantidad" placeholder="Cantidad" required value="{{ old('cantidad') }}">
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Cantidad inicial" aria-describedby="cantidad" id="cantidad" name="cantidad" placeholder="Cantidad inicial" required value="{{ old('cantidad') }}" onkeypress="return solonumeros(event);" maxlength="6">
                                                 <small id="cantidad" class="form-text text-muted">
                                                     *Obligatorio
                                                 </small>
