@@ -335,8 +335,23 @@ return [
                 ],
                 [
                     'text' => 'Empleados',
-                    'url'  => '#',
+                    'url'  => 'usuarios',
                     'icon' => 'fas fa-user-tie',
+                ],
+                [
+                    'text' => 'Sucursales',
+                    'url'  => 'sucursales',
+                    'icon' => 'fas fa-store',
+                ],
+                [
+                    'text' => 'Permisos Sucursales',
+                    'url'  => 'sucursales/permisos',
+                    'icon' => 'fas fa-store-alt-slash',
+                ],
+                [
+                    'text' => 'Cajas de cobro',
+                    'url'  => 'cajas',
+                    'icon' => 'fas fa-boxes',
                 ],
                 
             ],

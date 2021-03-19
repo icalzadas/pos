@@ -99,13 +99,7 @@
         </div>
         <input type="hidden" autocomplete="off" class="form-control" id="id_producto" name="id_producto" >
         <input type="text" autocomplete="off" class="form-control" id="producto" name="producto" placeholder="Ingresa nombre de Producto / SKU / Codigo de barras" title="Producto" required>
-        <!--<select name="producto" id="producto" class="custom-select" title="">
-             
-                                          
-        </select> --> 
-        <!--<div class="input-group-append">
-          <button class="btn btn-secondary" type="button" id="">+</button>
-        </div>-->
+        
 
       </div>    
     </div>
@@ -243,6 +237,8 @@
 @section('js')
   <script type="text/javascript">
     //solo numeros y tecla retroceso
+    
+
     function solonumeros(e) {
       tecla = (document.all) ? e.keyCode : e.which;
 
@@ -301,6 +297,29 @@
 
       document.getElementById("total_venta").value = sum;
     }
+
+    function eliminarFila(id){
+      // cell element
+      var cell = id.parentNode;
+      // row element
+      var row = cell.parentNode;
+      document.getElementById("tblVentas").deleteRow(row.rowIndex);
+
+      var sum = 0;
+      $('.total').each(function() {
+        sum += parseFloat($(this).val());
+      });
+      
+      console.log("suma de eliminar")
+      console.log(sum)
+
+      //console.log("calcular")
+      //console.log(sumatotal)
+
+      document.getElementById("total_venta").value = sum;
+
+      
+    }
     
     $(document).ready(function() { 
       var total_venta = 0;
@@ -321,6 +340,7 @@
       //console.log(producto);
       //EVENTO KEYUP DEL INPUT PRODUCTO
       node.addEventListener("keyup", function(event) {
+        event.preventDefault();
         if (event.key === "Enter") {
           event.preventDefault();
           //console.log(producto);
@@ -368,9 +388,9 @@
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control subtotal"  name="subtotal[]" >' + '</td>' + 
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control total"  name="total[]" >' + '</td>' +
                 '<td>' +                
-                    '<a href="#" >' +
-                        '<button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>' +
-                    '</a>' +
+                    
+                  '<button type="button" class="btn btn-square" title="Eliminarenter" onclick="eliminarFila(this)"><i class="fas fa-trash-alt fa-1x"></i></button>' +
+                    
                 '</td>' +
               '</tr>');
 
@@ -535,9 +555,9 @@
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control subtotal"  name="subtotal[]" >' + '</td>' + 
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control total"  name="total[]" >' + '</td>' +
                 '<td>' +                
-                    '<a href="#" >' +
-                        '<button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>' +
-                    '</a>' +
+                   
+                  '<button type="button" class="btn btn-square" title="Eliminar" onclick="eliminarFila(this)"><i class="fas fa-trash-alt fa-1x"></i></button>' +
+                    
                 '</td>' +
               '</tr>');
 
@@ -589,6 +609,8 @@
         var cambio = $("#cambio").val();
         var efectivo_pago = $("#efectivo_pago").val();
 
+        console.log("tot_venta:"+tot_venta);
+
         //envio el tipo de pago con la palabra Efectivo, este ya debe existir en la tabla tipos_pago
         $("#tipo_pago").val("Efectivo");
 
@@ -598,7 +620,7 @@
           return;
         }
 
-        if(tot_venta==""){  
+        if(tot_venta=="" || tot_venta==0){  
           $("#producto").focus();        
           Swal.fire("No hay nada que cobrar");
           return;
@@ -669,6 +691,8 @@
           }
         });
       });
+
+      
 
 
         

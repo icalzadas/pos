@@ -57,5 +57,24 @@ Route::post('caja/close', [App\Http\Controllers\CajaController::class, 'close'])
 //ALMACEN
 Route::resource('almacen', 'App\Http\Controllers\AlmacenController');
 
+//USERS
+Route::resource('usuarios', 'App\Http\Controllers\UserController');
+Route::post('usuarios/actualizar', [App\Http\Controllers\UserController::class, 'actualizar'])->name('actualizar_user');
+Route::post('usuarios/eliminar', [App\Http\Controllers\UserController::class, 'eliminar'])->name('eliminar_user');
+
+//PERMISOS SUCURSALES
+Route::resource('sucursales/permisos', 'App\Http\Controllers\PermisosSucursalController');
+Route::post('sucursales/permisos/eliminar', [App\Http\Controllers\PermisosSucursalController::class, 'eliminar'])->name('eliminar_permiso_sucursal');
+
+//SUCURSALES
+Route::resource('sucursales', 'App\Http\Controllers\SucursalController');
+Route::post('sucursales/actualizar', [App\Http\Controllers\SucursalController::class, 'actualizar'])->name('actualizar_sucursal');
+Route::post('sucursales/eliminar', [App\Http\Controllers\SucursalController::class, 'eliminar'])->name('eliminar_sucursal');
+
+//CAJAS
+Route::resource('cajas', 'App\Http\Controllers\CajasCobroController');
+Route::post('cajas/actualizar', [App\Http\Controllers\CajasCobroController::class, 'actualizar'])->name('actualizar_caja');
+Route::post('cajas/eliminar', [App\Http\Controllers\CajasCobroController::class, 'eliminar'])->name('eliminar_caja');
+
 
 

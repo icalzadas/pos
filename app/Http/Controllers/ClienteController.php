@@ -40,7 +40,7 @@ class ClienteController extends Controller
             
         ]);
 
-        return Redirect::to('clientes')->with(['message'=>'Cliente agreado correctamente']);
+        return Redirect::to('clientes')->with(['message'=>'Cliente agregado correctamente']);
     }
 
     public function actualizar(Request $request)
