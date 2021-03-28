@@ -667,7 +667,7 @@
                 //total_venta = 0;
             }); 
                     
-            window.open("{{route('index_ventas')}}", "Remito", "width=300, height=200")                           
+                                       
           },
           error: function(err) {
             console.log(err);
@@ -691,6 +691,10 @@
           }
         });
       });
+
+      
+
+
         
     });//fin document ready
     

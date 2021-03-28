@@ -33,11 +33,4 @@ class AlmacenController extends Controller
        
         return view('almacen.index', compact('stock'));
     }
-
-    public function modificar_stock(Request $request){
-        $stock = Stock::findOrFail($request->id);
-        $stock->cantidad = $request->cantidad; 
-        $stock->save();
-        return redirect('/almacen')->with(['message'=>'Stock modificado correctamente.']);
-    }
 }

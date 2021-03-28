@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,6 +14,26 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('impresora', function(){
+    $connector = new FilePrintConnector("php://stdout");
+    $printer = new Printer($connector);
+    $printer -> text("Hello World!\n");
+    $impresora = $printer;
+    
+    /*$nombreImpresora = "POS-58";
+    $connector = new WindowsPrintConnector($nombreImpresora);
+    $impresora = new Printer($connector);*/
+    $impresora->setJustification(Printer::JUSTIFY_CENTER);
+    $impresora->setTextSize(2, 2);
+    $impresora->text("Imprimiendo\n");
+    $impresora->text("ticket\n");
+    $impresora->text("desde\n");
+    $impresora->text("Laravel\n");
+    $impresora->setTextSize(1, 1);
+    $impresora->text("https://parzibyte.me");
+    $impresora->feed(5);
+    $impresora->close();
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,6 +65,7 @@ Route::post('categorias/eliminar', [App\Http\Controllers\CategoriaController::cl
 Route::get('ventas/pos', [App\Http\Controllers\VentaController::class, 'index'])->name('index_ventas');
 Route::post('ventas/store', [App\Http\Controllers\VentaController::class, 'store'])->name('store_ventas');
 Route::get('ventas/listado', [App\Http\Controllers\VentaController::class, 'listado'])->name('listado_ventas');
+Route::post('ventas/cancelar', [App\Http\Controllers\VentaController::class, 'cancelar'])->name('cancelar_ventas');
 
 //CLIENTES
 Route::resource('clientes', 'App\Http\Controllers\ClienteController');
@@ -55,7 +78,10 @@ Route::post('caja/open', [App\Http\Controllers\CajaController::class, 'open'])->
 Route::post('caja/close', [App\Http\Controllers\CajaController::class, 'close'])->name('close');
 
 //ALMACEN
-Route::resource('almacen', 'App\Http\Controllers\AlmacenController');
+Route::resource('almacen', 'App\Http\Controllers\AlmacenController')->only([
+    'index'
+]);
+Route::post('almacen/modificarstock', [App\Http\Controllers\AlmacenController::class, 'modificar_stock'])->name('modificar_stock');
 
 //USERS
 Route::resource('usuarios', 'App\Http\Controllers\UserController');

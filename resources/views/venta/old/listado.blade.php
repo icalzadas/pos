@@ -1,22 +1,7 @@
 @extends('adminlte::page')
 
-@section("content_header")
-    @if(session('message'))
-        <div class="alert alert-success alert-block">
-            <div class="row"> <!-- add no-gutters to make it narrower -->
-            <div class="col-auto align-self-start"> <!-- or align-self-center -->
-                <div class="glyphicon glyphicon-exclamation-sign"></div>
-                <i class="fas fa-exclamation"></i>
-            </div>
-            <div class="col">
-            {{ session('message') }}
-            </div>
-            </div>
-        </div>
-    @endif
-@endsection
 @section('content')
-@include('venta/modalCancel')
+
 <div class="row p-1">
         
     <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
@@ -38,13 +23,12 @@
                         <th scope="col">Cambio</th>
                         <th scope="col">Estatus</th>
                         <th scope="col">Subtotal</th>
-                        <th scope="col">Total</th>	
-                        <th scope="col">Cancelar</th>
+						<th scope="col">Total</th>	
 					</tr>
 				</thead>
 				<tbody>
 					@foreach($ventas as $v)
-					<tr {{$v->cobrado_sn == 3 ? 'class=bg-danger' : ''}}>                        
+					<tr>                        
 						<td style="display:none;">{{$v->id}}</td>
                         <td>{{$v->sucursal}}</td>
                         <td>{{$v->cliente}}</td>
@@ -57,18 +41,12 @@
                         
                         @if($v->cobrado_sn==1)
                         <td>Cobrada</td>
-                        @elseif($v->cobrado_sn==3)
-                        <td>Cancelada</td>
                         @else
                         <td>Sin cobrar</td>
                         @endif 
                         <td>{{$v->subtotal}}</td>
                         <td>{{$v->total}}</td>                       
-						<td>
-                            <a href="#" data-toggle="modal" data-target="#modal_cancelar_venta" data-id_venta="{{$v->id}}">
-                                <button class="btn btn-square" title="Cancelar"><i class="fas fa-trash-alt fa-1x"></i></button>
-                            </a>
-                        </td>
+						
 					</tr>
 					@endforeach					
 				</tbody>
@@ -108,19 +86,6 @@
              }
          
          
-            });
-
-            //Asigna id_venta al formulario del modal
-            $('#modal_cancelar_venta').on('show.bs.modal', function(event) {                            
-                
-                var button = $(event.relatedTarget); 
-                
-                var id_venta = button.data('id_venta');                                                                                     
-                
-                var modal = $(this);
-        
-                modal.find('#id_venta').val(id_venta);         
-               
             });
 
         });//fin document ready

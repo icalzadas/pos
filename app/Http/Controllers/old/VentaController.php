@@ -92,7 +92,7 @@ class VentaController extends Controller
         $total = $request->total;
 
         $cont = 0;
-        
+
         while($cont < count($id_producto)){
             DetalleVenta::create([
                 'id_venta' =>$venta->id,
@@ -124,8 +124,7 @@ class VentaController extends Controller
 
 
         return response()->json([
-            'message' => "Venta exitosa",
-            'id_venta' => $venta->id
+            'message' => "Venta exitosa"
         ], 200);
 
         //return Redirect::to('categorias')->with(['message'=>'Categoria agreada correctamente']);
