@@ -13,7 +13,4 @@ class DetalleVenta extends Model
     protected $guarded = [];
 
     public $timestamps = false;
-    public function producto(){
-        return $this->hasOne(Productos::class, 'id', 'id_producto');
-    }
 }

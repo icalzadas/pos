@@ -667,7 +667,7 @@
                 //total_venta = 0;
             }); 
                     
-            window.open("{{route('index_ventas')}}", "Remito", "width=300, height=200")                           
+            window.open("/ventas/ticket/" + response.id_venta, "Ticket", "width=400, height=500")                           
           },
           error: function(err) {
             console.log(err);

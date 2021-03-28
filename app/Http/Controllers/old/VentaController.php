@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Productos;
@@ -149,11 +148,6 @@ class VentaController extends Controller
 
     }
 
-    public function cancelar(Request $request){
-        $venta = Venta::findOrFail($request->id_venta);
-        $venta->cobrado_sn = 3; //TODO: Tabla de estados de venta
-        $venta->save();
-        return redirect()->route('listado_ventas')->with(['message'=>'Venta cancelada correctamente']);
-    }
+    
   
 }

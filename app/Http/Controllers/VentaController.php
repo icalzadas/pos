@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
@@ -156,5 +159,49 @@ class VentaController extends Controller
         $venta->save();
         return redirect()->route('listado_ventas')->with(['message'=>'Venta cancelada correctamente']);
     }
-  
+
+    public function ticket($id){
+        $venta = Venta::findOrFail($id);
+        return view("venta.ticket")->with("venta", $venta);
+    }
+
+    public function imprimir_ticket($id){
+        $venta = Venta::findOrFail($id);
+        $sucursal = $venta->sucursal->sucursal;
+        $cliente = $venta->cliente->nombre . " " . $venta->cliente->paterno;
+        $tipo_pago = $venta->tipoPago->tipo_pago;
+
+        //Esto escribe en la consola de php
+        $connector = new FilePrintConnector("php://stdout");
+        $impresora = new Printer($connector);
+        
+        //Configuración para imprimir en impresora térmica
+        //$nombreImpresora = "POS-58";
+        //$connector = new WindowsPrintConnector($nombreImpresora);
+        //$impresora = new Printer($connector);
+        $impresora->setTextSize(2, 2);
+        $impresora->text("Detalle de venta\n");
+        $impresora->setTextSize(1, 1);
+        $impresora->text("Sucursal: $sucursal \n");
+        $impresora->text("Cliente: $cliente\n");
+        $impresora->text("Fecha: $venta->fecha_venta\n");
+        $impresora->text("Tipo de pago: $tipo_pago\n");
+        foreach($venta->detalleVenta as $detalle){
+            $impresora->text("-----------------\n");
+            $producto = $detalle->producto->producto;
+            $impresora->text("Producto: $producto\n");
+            $impresora->text("Cantidad: $detalle->cantidad\n");
+            $impresora->text("Precio: $detalle->precio_venta\n");
+            $impresora->text("-----------------\n");
+        }
+        $impresora->text("Paga con: $venta->efectivo\n");
+        $impresora->text("Cambio: $venta->cambio\n");
+        $impresora->text("Costo total: $venta->total\n");
+        $impresora->feed(5);
+        $impresora->cut();
+        $impresora->close();
+        return response()->json([
+            'mensaje' => 'Impresión exitosa'
+        ]);
+    }
 }
