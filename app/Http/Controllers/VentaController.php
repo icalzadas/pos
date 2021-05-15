@@ -34,6 +34,7 @@ class VentaController extends Controller
                           ->select('s.*')
                           ->join('permisos_sucursales as p','s.id','=','p.id_sucursal')
                           ->where('p.id_user','=',$id_usuario)
+                          ->where('s.estatus',1)
                           ->get(); 
                           
         $clientes = Cliente::all();  
@@ -127,7 +128,7 @@ class VentaController extends Controller
 
 
         return response()->json([
-            'message' => "Venta exitosa",
+            'message' => "Venta a credito generada correctamente",
             'id_venta' => $venta->id
         ], 200);
 
@@ -172,13 +173,13 @@ class VentaController extends Controller
         $tipo_pago = $venta->tipoPago->tipo_pago;
 
         //Esto escribe en la consola de php
-        $connector = new FilePrintConnector("php://stdout");
-        $impresora = new Printer($connector);
+        //$connector = new FilePrintConnector("php://stdout");
+        //$impresora = new Printer($connector);
         
         //Configuración para imprimir en impresora térmica
-        //$nombreImpresora = "POS-58";
-        //$connector = new WindowsPrintConnector($nombreImpresora);
-        //$impresora = new Printer($connector);
+        $nombreImpresora = "pos_printer";
+        $connector = new WindowsPrintConnector($nombreImpresora);
+        $impresora = new Printer($connector);
         $impresora->setTextSize(2, 2);
         $impresora->text("Detalle de venta\n");
         $impresora->setTextSize(1, 1);

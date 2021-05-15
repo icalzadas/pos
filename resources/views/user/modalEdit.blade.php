@@ -29,12 +29,24 @@
                                                 </small>
                                             </div>
 
-                                            <div class="form-group col-md-6">                            
+                                            <div class="form-group col-md-3">                            
                                                 <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Nick" aria-describedby="edit_nick" id="edit_nick" name="edit_nick" placeholder="Nick"  required maxlength="50" value="{{ old('edit_nick') }}">
                                                 <small id="edit_nick" class="form-text text-muted">
                                                     *Obligatorio y unico, este dato se usara para iniciar sesion
                                                 </small>
-                                            </div>                                                                                                                    
+                                            </div> 
+
+                                            <div class="form-group col-md-3">                            
+                                                <select data-toggle="tooltip" data-placement="top" title="Rol" aria-describedby="edit_id_rol" name="edit_id_rol" id="edit_id_rol" class="form-control form-control-sm" required value="{{ old('edit_id_rol') }}">
+                                                    <option value="" selected>Selecciona un rol...</option>
+                                                    @foreach($roles as $r)
+                                                    <option value="{{$r->id}}">{{$r->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <small id="edit_id_rol" class="form-text text-muted">
+                                                    *Obligatorio
+                                                </small>
+                                            </div>                                                                                                                     
                                                                
                                         </div>
 

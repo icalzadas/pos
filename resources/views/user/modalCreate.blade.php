@@ -29,14 +29,24 @@
                                                 </small>
                                             </div>
 
-                                            <div class="form-group col-md-6">                            
+                                            <div class="form-group col-md-3">                            
                                                 <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Nick" aria-describedby="nick" id="nick" name="nick" placeholder="Nick"  required maxlength="50" value="{{ old('nick') }}">
                                                 <small id="nick" class="form-text text-muted">
                                                     *Obligatorio y unico, este dato se usara para iniciar sesion
                                                 </small>
                                             </div>
 
-                                                                                                                    
+                                            <div class="form-group col-md-3">                            
+                                                <select data-toggle="tooltip" data-placement="top" title="Rol" aria-describedby="id_rol" name="id_rol" id="id_rol" class="form-control form-control-sm" required value="{{ old('id_rol') }}">
+                                                    <option value="" selected>Selecciona un rol...</option>
+                                                    @foreach($roles as $r)
+                                                    <option value="{{$r->id}}">{{$r->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <small id="id_rol" class="form-text text-muted">
+                                                    *Obligatorio
+                                                </small>
+                                            </div>                                                                                                                    
                                                                
                                         </div>
 

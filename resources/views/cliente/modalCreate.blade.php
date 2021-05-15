@@ -79,6 +79,25 @@
                                                                
                                         </div>
 
+                                        <div class="form-group form-row">                                  
+                                       
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="CURP" aria-describedby="curp" id="curp" name="curp" placeholder="CURP"  maxlength="18" value="{{ old('curp') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Limite Credito" aria-describedby="limite_credito" id="limite_credito" name="limite_credito" placeholder="Limite Credito"  maxlength="10" value="{{ old('limite_credito') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Dias Credito" aria-describedby="dias_credito" id="dias_credito" name="dias_credito" placeholder="Dias Credito"  maxlength="5" value="{{ old('dias_credito') }}">
+                                                
+                                            </div>                                                                         
+                                                               
+                                        </div>
+
                                         <div class="form-group form-row">
                                             <div class="ml-auto">
                                                     

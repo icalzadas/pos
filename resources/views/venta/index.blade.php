@@ -118,7 +118,7 @@
       <thead class="">
       
       <tr>
-      <th scope="col" >ID Producto</th>
+      <th scope="col" style="display:none;">ID Producto</th>
       <th scope="col">Producto</th>
       <th scope="col" class="">Cantidad</th>
       <th scope="col">Precio</th>
@@ -381,7 +381,7 @@
               
               //si encuentra la data entonces llena la tabla
               $('#tblVentasBody').append('<tr>' +
-                '<td>' + '<input readonly type="text" value="'+response[0].id + '" class="form-control"  name="id_producto_tabla[]" >' + '</td>' +
+                '<td style="display:none;">' + '<input readonly type="text" value="'+response[0].id + '" class="form-control"  name="id_producto_tabla[]" >' + '</td>' +
                 '<td>' + response[0].producto + '</td>' + 
                 '<td>' + '<input type="number" value="1" class="form-control"  name="cantidad[]" onChange="Calcular(this)" onKeyup="Calcular(this)" min="1">' + '</td>' + 
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control"  name="precio_venta[]" >' + '</td>' +
@@ -548,7 +548,7 @@
               
               //si encuentra la data entonces llena la tabla
               $('#tblVentasBody').append('<tr>' +
-                '<td>' + '<input readonly type="text" value="'+response[0].id + '" class="form-control" name="id_producto_tabla[]" >' + '</td>' +
+                '<td style="display:none;">' + '<input readonly type="text" value="'+response[0].id + '" class="form-control" name="id_producto_tabla[]" >' + '</td>' +
                 '<td>' + response[0].producto + '</td>' + 
                 '<td>' + '<input type="number" value="1" class="form-control"  name="cantidad[]" onChange="Calcular(this)" onKeyup="Calcular(this)" min="1">' + '</td>' + 
                 '<td>' + '<input readonly type="text" value="'+precio + '" class="form-control"  name="precio_venta[]" >' + '</td>' +
@@ -655,6 +655,106 @@
                 position: 'center',
                 type: 'success',
                 title: 'Venta exitosa',
+                showConfirmButton: false,
+                timer: 2500
+                
+            }).then(() => { 
+                //console.log('triggered redirect here');
+                //limpiar();
+                //window.location.href = "{{ url("/") }}/customers"; 
+                $("#tblVentasBody").children().remove() 
+                $("#frmVentas")[0].reset();
+                //total_venta = 0;
+            }); 
+                    
+            window.open("/ventas/ticket/" + response.id_venta, "Ticket", "width=400, height=500")                           
+          },
+          error: function(err) {
+            console.log(err);
+            if(err.status)
+            {
+              Swal.fire({
+                  position: 'center',
+                  type: 'error',
+                  title: `${err.responseJSON.message}`,
+                  showConfirmButton: true
+              })
+            }else{
+              Swal.fire({
+              position: 'center',
+              type: 'error',
+              title: 'Venta no registrada',
+              showConfirmButton: true
+              })
+            }
+                        
+          }
+        });
+      });
+
+      $('#btnCredito').on('click', function () {
+        //console.log('paga');
+        //validaciones
+        var id_sucursal =  $('select[name=id_sucursal]').val();
+        var tot_venta = $("#total_venta").val();
+        var cambio = $("#cambio").val();
+        var efectivo_pago = $("#efectivo_pago").val();
+        var cliente =  $( "#id_cliente option:selected" ).text();
+
+        console.log(cliente);
+
+        //el id_cliente 1 es la clave reservada para publico en general
+        if(cliente.trim()=='Publico en general' || cliente.trim()=='publico en general'){
+          Swal.fire("No se permite credito a publico en general");
+          return;
+        }
+
+        console.log("tot_venta:"+tot_venta);
+
+        //envio el tipo de pago con la palabra Efectivo, este ya debe existir en la tabla tipos_pago
+        $("#tipo_pago").val("Credito");
+
+        if(id_sucursal==""){
+          $("#id_sucursal").focus();
+          Swal.fire("Selecciona una sucursal");
+          return;
+        }
+
+        if(tot_venta=="" || tot_venta==0){  
+          $("#producto").focus();        
+          Swal.fire("No hay nada que cobrar");
+          return;
+        }
+
+        /*if(efectivo_pago==""){ 
+          $("#efectivo_pago").focus();         
+          Swal.fire("Con cuanto paga el cliente?");
+          return;
+        }*/
+
+        /*if(parseFloat(efectivo_pago)<parseFloat(tot_venta)){
+          $("#efectivo_pago").focus();         
+          Swal.fire("El total a pagar es mayor al efectivo ingresado");
+          return;
+        }*/
+
+        var formData = new FormData(document.getElementById('frmVentas'));
+        
+        $.ajax({
+          url:"{{route('store_ventas')}}",
+          type:'POST',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response){
+            console.log("exito venta");
+            console.log(response);
+            total_venta = 0;
+            tv.value="";
+            Swal.fire({
+                position: 'center',
+                type: 'success',
+                title: 'Venta a credito generada correctamente',
                 showConfirmButton: false,
                 timer: 2500
                 

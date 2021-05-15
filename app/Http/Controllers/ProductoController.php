@@ -26,7 +26,7 @@ class ProductoController extends Controller
         $id_usuario = $user->id;
 
         $users_sucursales = PermisosSucursales::where('id_user',$id_usuario)->select('id_sucursal')->get();
-        $missucursales = Sucursal::whereIn('id',$users_sucursales)->get();
+        $missucursales = Sucursal::whereIn('id',$users_sucursales)->where('estatus',1)->get();
 
         $productos = DB::table('productos as p')
                      ->join('categorias as c','p.id_categoria','=','c.id')
@@ -35,7 +35,7 @@ class ProductoController extends Controller
                      ->orderBy('c.categoria','asc')
                      ->select('p.*','c.categoria','s.sucursal')->get();
         
-        $categorias = Categorias::all();
+        $categorias = Categorias::where('status',1)->get();
         return view('producto.index', compact('productos','categorias','missucursales'));
     }
 
@@ -280,7 +280,7 @@ class ProductoController extends Controller
         $id_sucursal = $request->id_sucursal; 
   
         if($search == ''){  
-           $productos = Productos::where('id_sucursal',$id_sucursal)->orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')->limit(5)->get();  
+           $productos = Productos::where('id_sucursal',$id_sucursal)->where('status',1)->orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')->limit(5)->get();  
         }else{  
            /*$productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
                         ->where('id_sucursal',$id_sucursal)
@@ -292,6 +292,7 @@ class ProductoController extends Controller
                         
             $productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
                         ->where('id_sucursal',$id_sucursal)
+                        ->where('status',1)
                         ->whereRaw("( producto like '%".$search."%' or sku like '%".$search."%' or codigo_barras like '%".$search."%' )")                        
                         ->limit(5)
                         ->get();             

@@ -38,7 +38,7 @@
     @include('user/modalDelete')
     <div class="row p-1">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            <a href="#" data-toggle="modal" data-target="#modal_crear_user"><button class="btn btn-success"><i class="fab fa-cuttlefish fa-1x"></i>&nbsp;Nuevo Usuario</button></a>
+            <a href="#" data-toggle="modal" data-target="#modal_crear_user"><button class="btn btn-success"><i class="fas fa-user fa-1x"></i>&nbsp;Nuevo Usuario</button></a>
         </div>
         
     </div>
@@ -55,9 +55,8 @@
 							<th scope="col">Nombre Completo</th>
                             <th scope="col">Nick</th>                            
 							<th scope="col">Email</th>
-
-                            <th scope="col">Telefono</th>
-                            
+                            <th scope="col">Telefono</th> 
+                            <th scope="col">Rol</th>                          
                             <th scope="col">Opciones</th>	
 						</tr>
 					</thead>
@@ -70,9 +69,9 @@
                                 <td>{{$u->email}}</td> 
 
                                 <td>{{$u->telefono}}</td>                                                                                            
-
+                                <td>{{$u->getRoleNames()[0]}}</td>
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_editar_user" data-id_user="{{$u->id}}" data-name="{{$u->name}}" data-nick="{{$u->nick}}" data-email="{{$u->email}}" data-telefono="{{$u->telefono}}" data-password="{{$u->password}}" data-image="{{$u->image}}">
+                                    <a href="#" data-toggle="modal" data-target="#modal_editar_user" data-id_user="{{$u->id}}" data-name="{{$u->name}}" data-nick="{{$u->nick}}" data-email="{{$u->email}}" data-telefono="{{$u->telefono}}" data-password="{{$u->password}}" data-image="{{$u->image}}" data-id_rol="{{ $u->roles->first()->id }}">
                                         <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
                                     </a>
                                     <a href="#" data-toggle="modal" data-target="#modal_eliminar_user" data-id_user="{{$u->id}}">
@@ -145,7 +144,10 @@
                 var name =  button.data('name')      
                 var nick = button.data('nick') 
                 var email = button.data('email')
-                var telefono = button.data('telefono')                                                                                                 
+                var telefono = button.data('telefono') 
+                var id_rol = button.data('id_rol')
+                
+                console.log(id_rol);
                 
                 var modal = $(this)
 
@@ -155,7 +157,7 @@
                 modal.find('#edit_nick').val(nick)
                 modal.find('#edit_email').val(email)
                 modal.find('#edit_telefono').val(telefono)
-                    
+                $("#edit_id_rol option[value='"+id_rol+"']").attr("selected", true);    
                             
             });
 

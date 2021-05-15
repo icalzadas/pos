@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Productos;
 use App\Models\Categorias;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
@@ -17,8 +18,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
+        $roles = Role::all();
         //$categorias = Categorias::all();
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users','roles'));
     }
 
     public function store(Request $request)
@@ -37,10 +39,12 @@ class UserController extends Controller
             'nick'    => $request->nick,
             'email'    => $request->email,
             'telefono'    => $request->telefono,
-            'password'    => Hash::make($request->password),
-            
-            
+            'password'    => Hash::make($request->password),            
         ]);
+
+        //debo asignar el rol        
+        $rol = Role::find($request->id_rol);
+        $user->assignRole($rol->name);
 
         return Redirect::to('usuarios')->with(['message'=>'Usuario agregado correctamente']);
     }
@@ -67,6 +71,9 @@ class UserController extends Controller
         }        
 
         $user->save();
+
+        $rol = Role::find($request->edit_id_rol);
+        $user->syncRoles($rol->name);
 
         return Redirect::to('usuarios')->with(['message'=>'Usuario editado correctamente']);
     }

@@ -37,6 +37,9 @@ class ClienteController extends Controller
             'cp' => $request->cp,
             'telefono' => $request->telefono,
             'rfc' => $request->rfc,
+            'curp' => $request->curp,
+            'limite_credito' => $request->limite_credito,
+            'dias_credito' => $request->dias_credito
             
         ]);
 
@@ -59,9 +62,13 @@ class ClienteController extends Controller
         $cliente->colonia = $request->edit_colonia;
         $cliente->ciudad = $request->edit_ciudad;
 
-        $cliente->cp = $request->cp;
-        $cliente->telefono = $request->telefono;
-        $cliente->rfc = $request->rfc;
+        $cliente->cp = $request->edit_cp;
+        $cliente->telefono = $request->edit_telefono;
+        $cliente->rfc = $request->edit_rfc;
+
+        $cliente->curp = $request->edit_curp;
+        $cliente->limite_credito = $request->edit_limite_credito;
+        $cliente->dias_credito = $request->edit_dias_credito;
 
         $cliente->save();
 

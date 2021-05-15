@@ -80,6 +80,25 @@
                                                                
                                         </div> 
 
+                                        <div class="form-group form-row">                                  
+                                       
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="CURP" aria-describedby="edit_curp" id="edit_curp" name="edit_curp" placeholder="CURP"  maxlength="18" value="{{ old('edit_curp') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Limite Credito" aria-describedby="edit_limite_credito" id="edit_limite_credito" name="edit_limite_credito" placeholder="Limite Credito"  maxlength="10" value="{{ old('edit_limite_credito') }}">
+                                                
+                                            </div>
+
+                                            <div class="form-group col-md-4">                            
+                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Dias Credito" aria-describedby="edit_dias_credito" id="edit_dias_credito" name="edit_dias_credito" placeholder="Dias Credito"  maxlength="5" value="{{ old('edit_dias_credito') }}">
+                                                
+                                            </div>                                                                         
+                                                               
+                                        </div>
+
                                         <div class="form-group form-row">
                                             <div class="ml-auto">
                                                     

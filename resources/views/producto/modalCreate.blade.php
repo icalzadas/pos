@@ -52,7 +52,7 @@
                                             </div>
                                        
                                             <div class="form-group col-md-6">                            
-                                                <input type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Producto" aria-describedby="producto" id="producto" name="producto" placeholder="Producto" required maxlength="100" value="{{ old('producto') }}">
+                                                <input autocomplete="off" type="text" class="form-control form-control-sm" data-toggle="tooltip" data-placement="top" title="Producto" aria-describedby="producto" id="producto" name="producto" placeholder="Producto" required maxlength="100" value="{{ old('producto') }}">
                                                 <small id="producto" class="form-text text-muted">
                                                     *Obligatorio
                                                 </small>
