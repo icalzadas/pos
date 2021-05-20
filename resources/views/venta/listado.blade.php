@@ -24,11 +24,11 @@
         <!--<a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fas fa-file-alt fa-1x"></i>&nbsp;Nuevo Producto</button></a>&nbsp&nbsp;-->
             
         <div class="table-responsive">
-			<table class="table table-sm table-striped table-bordered" id="tblListadoVentas">
+			<table class="table table-sm table-striped table-bordered table-hover" id="tblListadoVentas">
 				<thead class="thead-dark">
 					<tr>
                         
-						<th scope="col" style="display:none;">ID Venta</th>
+						<th scope="col" >ID Venta</th>
 						<th scope="col">Sucursal</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Usuario</th>
@@ -36,37 +36,35 @@
                         <th scope="col">Fecha de venta</th>
                         <th scope="col">Efectivo</th>
                         <th scope="col">Cambio</th>
+                        <th scope="col">Cobrada S/N</th>
                         <th scope="col">Estatus</th>
                         <th scope="col">Subtotal</th>
                         <th scope="col">Total</th>	
-                        <th scope="col">Cancelar</th>
+                        <th scope="col">Opciones</th>
 					</tr>
 				</thead>
 				<tbody>
 					@foreach($ventas as $v)
-					<tr {{$v->cobrado_sn == 3 ? 'class=bg-danger' : ''}}>                        
-						<td style="display:none;">{{$v->id}}</td>
+					<tr {{$v->estatus == 0 ? 'class=bg-danger' : ''}}>                        
+						<td >{{$v->id}}</td>
                         <td>{{$v->sucursal}}</td>
                         <td>{{$v->cliente}}</td>
                         <td>{{$v->nick}}</td>
                         <td>{{$v->tipo_pago}}</td>
                         <td>{{$v->fecha_venta}}</td>
                         <td>{{$v->efectivo}}</td>
-                        <td>{{$v->cambio}}</td>
-                        
-                        
+                        <td>{{$v->cambio}}</td>                       
                         @if($v->cobrado_sn==1)
-                        <td>Cobrada</td>
-                        @elseif($v->cobrado_sn==3)
-                        <td>Cancelada</td>
+                        <td>Si</td>                        
                         @else
-                        <td>Sin cobrar</td>
+                        <td>No</td>
                         @endif 
+                        <td>{{ $v->estatus==1 ? 'Activa' : 'Cancelada'}}</td>
                         <td>{{$v->subtotal}}</td>
                         <td>{{$v->total}}</td>                       
-						<td>
-                            <a href="#" data-toggle="modal" data-target="#modal_cancelar_venta" data-id_venta="{{$v->id}}">
-                                <button class="btn btn-square" title="Cancelar"><i class="fas fa-trash-alt fa-1x"></i></button>
+						<td >
+                            <a href="#"  data-toggle="modal" data-target="#modal_cancelar_venta" data-id_venta="{{$v->id}}">
+                                <button class="btn btn-square" title="Cancelar" {{ $v->estatus==0 ?  'disabled' : ''}}><i class="fas fa-trash-alt fa-1x"></i></button>
                             </a>
                         </td>
 					</tr>

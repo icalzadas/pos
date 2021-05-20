@@ -20,6 +20,7 @@ use App\Models\Caja;
 use App\Models\TiposPago;
 use App\Models\Stock;
 use App\Models\MovimientoStock;
+use App\Models\CuentasXCobrar;
 use Carbon\Carbon;
 
 class VentaController extends Controller
@@ -85,7 +86,8 @@ class VentaController extends Controller
             'cambio' =>$request->cambio,
             'cobrado_sn' =>1,
             'subtotal' =>$request->total_venta,
-            'total' =>$request->total_venta
+            'total' =>$request->total_venta,
+            'estatus' =>1
         ]);
 
         //detalle de la venta
@@ -124,7 +126,18 @@ class VentaController extends Controller
             $cont++;    
         }
 
-        
+        if($tipo_pago_aux->tipo_pago=='Credito'){
+            $fecha_venta_aux = $fecha_venta;
+            $fecha_cobro = Carbon::now()->addDay($request->dias_credito);
+            //$fecha_cobro->addDay($request->dias_credito);
+            CuentasXCobrar::create([
+                'id_venta' => $venta->id,
+                'limite_credito' => $request->lim_credito,
+                'dias_credito' => $request->dias_credito,
+                'fecha_venta' => $fecha_venta_aux,
+                'fecha_cobro' => $fecha_cobro
+            ]);
+        }
 
 
         return response()->json([
@@ -146,7 +159,7 @@ class VentaController extends Controller
                     ->join('clientes as c','v.id_cliente','=','c.id')
                     ->join('users as u','v.id_user','=','u.id')
                     ->join('tipos_pago as t','v.id_tipo_pago','=','t.id')
-                    ->select('v.id','s.sucursal',DB::raw("concat(ifnull(c.nombre,''),' ',ifnull(c.paterno,''),' ',ifnull(c.materno,'')) as cliente"),'u.nick','t.tipo_pago','v.fecha_venta','v.efectivo','v.cambio','v.cobrado_sn','v.subtotal','v.total')
+                    ->select('v.id','s.sucursal',DB::raw("concat(ifnull(c.nombre,''),' ',ifnull(c.paterno,''),' ',ifnull(c.materno,'')) as cliente"),'u.nick','t.tipo_pago','v.fecha_venta','v.efectivo','v.cambio','v.cobrado_sn','v.subtotal','v.total','v.estatus')
                     ->whereIn('v.id_sucursal',$users_sucursales)
                     ->get();
         
@@ -156,8 +169,20 @@ class VentaController extends Controller
 
     public function cancelar(Request $request){
         $venta = Venta::findOrFail($request->id_venta);
-        $venta->cobrado_sn = 3; //TODO: Tabla de estados de venta
+        $venta->estatus = 0; 
         $venta->save();
+
+        //debo regresar cantidades al stock
+        foreach($venta->detalleVenta as $detalle){
+            //actualizo stock
+            $stock = Stock::where('id_producto',$detalle->id_producto)->where('id_sucursal',$venta->id_sucursal)->first();
+            if($stock!=null){
+                $stock->cantidad = $stock->cantidad + $detalle->cantidad;
+                $stock->save();
+            }
+            
+        }
+
         return redirect()->route('listado_ventas')->with(['message'=>'Venta cancelada correctamente']);
     }
 

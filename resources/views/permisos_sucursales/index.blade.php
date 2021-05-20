@@ -37,7 +37,7 @@
     @include('permisos_sucursales/modalDelete')
     <div class="row p-1">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            <a href="#" data-toggle="modal" data-target="#modal_crear_permiso"><button class="btn btn-success"><i class="fab fa-cuttlefish fa-1x"></i>&nbsp;Nuevo permiso sucursal</button></a>
+            <a href="#" data-toggle="modal" data-target="#modal_crear_permiso"><button class="btn btn-success"><i class="fas fa-store-alt-slash fa-1x"></i>&nbsp;Nuevo permiso sucursal</button></a>
         </div>
         
     </div>

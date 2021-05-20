@@ -20,6 +20,12 @@ class ClienteController extends Controller
         return view('cliente.index', compact('clientes'));
     }
 
+    public function show($id)
+    {
+        //
+        echo("hola");
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -81,5 +87,12 @@ class ClienteController extends Controller
         $cliente->delete();
 
         return Redirect::to('clientes')->with(['message'=>'Cliente eliminado correctamente']);
+    }
+
+    public function datacredito(Request $request){
+        $id_cliente = $request->id_cliente;
+
+        $cliente = Cliente::where('id', '=',$id_cliente)->get();  
+        return response()->json($cliente);
     }
 }

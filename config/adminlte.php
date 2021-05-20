@@ -65,7 +65,7 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
     'usermenu_desc' => false,
@@ -190,7 +190,7 @@ return [
     'dashboard_url' => '/',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'register_url' => 'register',
+    'register_url' => '',
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
     'profile_url' => false,
@@ -309,11 +309,7 @@ return [
     ],*/
 
     'menu' => [
-        [
-            'text' => 'search',
-            'search' => false,
-            'topnav' => true,
-        ], 
+        
         [
             'text' => 'Catalogos',
             'icon' => 'fas fa-book-reader',
@@ -322,36 +318,43 @@ return [
                     'text' => 'Clientes',
                     'url'  => 'clientes',
                     'icon' => 'far fa-address-card',
+                    'can'     => ['admin'],
                 ], 
                 [
                     'text' => 'Categorias',
                     'url'  => 'categorias',
                     'icon' => 'fab fa-cuttlefish',
+                    'can'     => ['admin','almacenista'],
                 ],       
                 [
                     'text' => 'Productos',
                     'url'  => 'productos',
                     'icon' => 'fab fa-product-hunt',
+                    'can'     => ['admin','almacenista'],
                 ],
                 [
                     'text' => 'Empleados',
                     'url'  => 'usuarios',
                     'icon' => 'fas fa-user-tie',
+                    'can'     => ['admin'],
                 ],
                 [
                     'text' => 'Sucursales',
                     'url'  => 'sucursales',
                     'icon' => 'fas fa-store',
+                    'can'     => ['admin'],
                 ],
                 [
                     'text' => 'Permisos Sucursales',
                     'url'  => 'sucursales/permisos',
                     'icon' => 'fas fa-store-alt-slash',
+                    'can'     => ['admin'],
                 ],
                 [
                     'text' => 'Cajas de cobro',
                     'url'  => 'cajas',
                     'icon' => 'fas fa-boxes',
+                    'can'     => ['admin'],
                 ],
                 
             ],
@@ -366,11 +369,13 @@ return [
                     'text' => 'Terminal POS',
                     'url'  => 'ventas/pos',
                     'icon' => 'fas fa-hand-holding-usd',
+                    'can'     => ['admin','vendedor','cajero'],
                 ],                
                 [
                     'text' => 'Listado de ventas',
                     'icon' => 'fas fa-list-ol',
                     'url'  => 'ventas/listado',
+                    'can'     => ['admin'],
                 ],
             ],
         ],
@@ -378,16 +383,19 @@ return [
             'text' => 'Caja',
             'url'  => 'caja',
             'icon' => 'fas fa-box',
+            'can'     => ['admin','cajero'],
         ],
         [
             'text' => 'Almacen',
             'url'  => 'almacen',
             'icon' => 'fas fa-database',
+            'can'     => ['admin','almacenista'],
         ],
         [
             'text' => 'Reportes',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-chart-bar',
+            'can'     => ['admin'],
         ],
         
         

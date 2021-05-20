@@ -25,7 +25,7 @@
   <input type="hidden" autocomplete="off" class="form-control" id="tipo_pago" name="tipo_pago" >
 
   <!--FILA SUCURSAL Y TIPO DE PRECIO-->
-  <div class="form-group form-row">
+  <div class="form-row">
     <!--SUCURSAL-->
     <div class="form-group col-md-6">
       <div class="input-group mb-3">
@@ -68,8 +68,44 @@
     </div>
   </div>
 
+  <!--FILA OPCIONES DE CLIENTE-->
+  <div class="form-row justify-content-end datacredito" style="display:none;">
+    <!--LIMITE CREDITO-->
+    
+    <div class="form-group col-md-3">
+      <label for="lim_credito">Limite Credito</label>
+      <div class="input-group mb-3">
+      
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-transparent border-right-0">
+            <span class="fas fa-dollar-sign"></span>
+          </div>
+        </div>
+        
+        <input type="text" autocomplete="off" class="form-control form-control-sm" id="lim_credito" name="lim_credito"  title="Limite Credito" >
+
+      </div>    
+    </div>    
+
+    <!--DIAS CREDITO-->
+    <div class="form-group col-md-3">
+      <label for="dias_credito">Dias Credito</label>
+      <div class="input-group mb-3">
+      
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-transparent">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+        </div>
+        
+        <input type="text" autocomplete="off" class="form-control form-control-sm" id="dias_credito" name="dias_credito"  title="Dias Credito" >       
+
+      </div>    
+    </div>
+  </div>
+
   <!--FILA CLIENTE Y PRODUCTO-->
-  <div class="form-group form-row">
+  <div class="form-row">
     <!--TIPO DE PRECIO-->
     <div class="form-group col-md-6">
       <div class="input-group mb-3">
@@ -105,7 +141,7 @@
     </div>
   </div>
 
-  <div class="form-group form-row">
+  <div class="form-row">
     <div class="form-group col-auto">                                                  
         <button type="button" class="btn btn-success" id="btnAgregarProducto"><i class="fas fa-plus fa-1x"></i>&nbsp;Agregar producto</button>                                                  
                                                   
@@ -329,6 +365,27 @@
       const tv = document.getElementById("total_venta");
       
       //var producto = "";
+
+      $('#id_cliente').change(event => {
+        
+        var id_cliente = $('select[name=id_cliente]').val();
+        //el id_cliente 1 DEBE SER publico en general asi que lo omitimos
+        //console.log(id_cliente);
+        if(id_cliente!=1){
+          $('.datacredito').show();
+          $.get('{{ url("/") }}/cliente/datacredito',{id_cliente: id_cliente},function(data){
+                        
+            $.each(data,function(fetch, miobj){
+              
+              $("#lim_credito").val(miobj.limite_credito);
+              $("#dias_credito").val(miobj.dias_credito);               
+            });
+          });
+        }else{
+          $('.datacredito').hide();
+        }       
+        
+      });
 
       //MANEJA EL CAMBIO AL CLIENTE
       ep.addEventListener("keyup", function(event) {
