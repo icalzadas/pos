@@ -2,8 +2,7 @@
 
 @section('title', 'Sucursales')
 
-@section('content_header')
-    <h1>Sucursales</h1>
+@section('content_header')    
     <!--@if(session('message'))
         <div class="alert alert-success alert-block">
             <div class="row"> 
@@ -36,66 +35,83 @@
     @include('sucursal/modalCreate')
     @include('sucursal/modalEdit')
     @include('sucursal/modalDelete')
-    <div class="row p-1">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            <a href="#" data-toggle="modal" data-target="#modal_crear_sucursal"><button class="btn btn-success"><i class="fas fa-store fa-1x"></i>&nbsp;Nueva Sucursal</button></a>
+
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h1 class="card-title">Sucursales</h1>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
         </div>
-        
-    </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+            <div class="row p-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+                    <a href="#" data-toggle="modal" data-target="#modal_crear_sucursal"><button class="btn btn-success"><i class="fas fa-store fa-1x"></i>&nbsp;Nueva Sucursal</button></a>
+                </div>                
+            </div>    
+            <div class="row p-1">
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">            
+                    
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-bordered" id="tblSucursales">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">ID Sucursal</th>
+                                    <th scope="col">Sucursal</th>
+                                    <th scope="col">Calle</th>                            
+                                    <th scope="col">Colonia</th>
+
+                                    <th scope="col">Ciudad</th>
+                                    <th scope="col">Estatus</th>
+                                    <th scope="col">Opciones</th>	
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($sucursales as $s)
+                                    <tr>
+                                        <td>{{$s->id}}</td>
+                                        <td>{{$s->sucursal}}</td>
+                                        <td>{{$s->calle}}</td> 
+                                        <td>{{$s->colonia}}</td> 
+
+                                        <td>{{$s->ciudad}}</td>
+
+                                        @if($s->estatus==1)
+                                        <td>Activo</td>
+                                        @else
+                                        <td>Inactivo</td>
+                                        @endif                                                                                         
+
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#modal_editar_sucursal" data-id_sucursal="{{$s->id}}" data-sucursal="{{$s->sucursal}}" data-calle="{{$s->calle}}" data-colonia="{{$s->colonia}}" data-ciudad="{{$s->ciudad}}" data-estatus="{{$s->cestatus}}">
+                                                <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
+                                            </a>
+                                            <a href="#" data-toggle="modal" data-target="#modal_eliminar_sucursal" data-id_sucursal="{{$s->id}}">
+                                                <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
+                                            </a>
+                                            
+                                        </td>
+                                        
+                                    </tr>
+                                @endforeach					
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div><!--fin card body-->
+    </div> <!--fin card-->
+
     
-    <div class="row p-1">
-        
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">            
-            
-            <div class="table-responsive">
-				<table class="table table-sm table-striped table-bordered" id="tblSucursales">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">ID Sucursal</th>
-							<th scope="col">Sucursal</th>
-                            <th scope="col">Calle</th>                            
-							<th scope="col">Colonia</th>
-
-                            <th scope="col">Ciudad</th>
-                            <th scope="col">Estatus</th>
-                            <th scope="col">Opciones</th>	
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($sucursales as $s)
-							<tr>
-								<td>{{$s->id}}</td>
-                                <td>{{$s->sucursal}}</td>
-                                <td>{{$s->calle}}</td> 
-                                <td>{{$s->colonia}}</td> 
-
-                                <td>{{$s->ciudad}}</td>
-
-                                @if($s->estatus==1)
-                                <td>Activo</td>
-                                @else
-                                <td>Inactivo</td>
-                                @endif                                                                                         
-
-                                <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_editar_sucursal" data-id_sucursal="{{$s->id}}" data-sucursal="{{$s->sucursal}}" data-calle="{{$s->calle}}" data-colonia="{{$s->colonia}}" data-ciudad="{{$s->ciudad}}" data-estatus="{{$s->cestatus}}">
-                                        <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
-                                    </a>
-                                    <a href="#" data-toggle="modal" data-target="#modal_eliminar_sucursal" data-id_sucursal="{{$s->id}}">
-                                        <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
-                                    </a>
-                                    
-                                </td>
-								
-							</tr>
-						@endforeach					
-					</tbody>
-				</table>
-			</div>
-            
-        </div>
-
-    </div>
 @endsection
 
 @section('css')
@@ -120,7 +136,7 @@
             $('[data-toggle="tooltip"]').tooltip(); 
 
             var tblSucursales = $('#tblSucursales').DataTable({
-                         
+                "dom": 'Bfrtipl',         
                 stateSave: true,
                 "language": {
                     "sProcessing":     "Procesando...",

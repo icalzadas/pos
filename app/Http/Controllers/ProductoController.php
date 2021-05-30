@@ -280,7 +280,20 @@ class ProductoController extends Controller
         $id_sucursal = $request->id_sucursal; 
   
         if($search == ''){  
-           $productos = Productos::where('id_sucursal',$id_sucursal)->where('status',1)->orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')->limit(5)->get();  
+           //$productos = Productos::where('id_sucursal',$id_sucursal)->where('status',1)->orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')->limit(5)->get();  
+           $productos = DB::table('productos as p')
+                        ->select(DB::raw("concat(p.producto,'(sku:',p.sku,')') as producto"),'p.id')
+                        ->join('stock as s', function($join){
+                            $join->on('p.id','=','s.id_producto');
+                            $join->on('p.id_sucursal','=','s.id_sucursal');
+                        }) 
+                        ->where('p.id_sucursal',$id_sucursal)
+                        ->where('p.status',1)  
+                        ->where('s.cantidad','>',0)                         
+                        ->orderby('p.producto','asc')
+                        ->limit(5)
+                        ->get();             
+        
         }else{  
            /*$productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
                         ->where('id_sucursal',$id_sucursal)
@@ -290,12 +303,26 @@ class ProductoController extends Controller
                         ->limit(5)
                         ->get(); */
                         
-            $productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
+            /*$productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
                         ->where('id_sucursal',$id_sucursal)
                         ->where('status',1)
                         ->whereRaw("( producto like '%".$search."%' or sku like '%".$search."%' or codigo_barras like '%".$search."%' )")                        
                         ->limit(5)
-                        ->get();             
+                        ->get();*/                                
+                        
+            $productos = DB::table('productos as p')
+                        ->select(DB::raw("concat(p.producto,'(sku:',p.sku,')') as producto"),'p.id')
+                        ->join('stock as s', function($join){
+                            $join->on('p.id','=','s.id_producto');
+                            $join->on('p.id_sucursal','=','s.id_sucursal');
+                        }) 
+                        ->where('p.id_sucursal',$id_sucursal)
+                        ->where('p.status',1)  
+                        ->where('s.cantidad','>',0)
+                        ->whereRaw("( p.producto like '%".$search."%' or p.sku like '%".$search."%' or p.codigo_barras like '%".$search."%' )") 
+                        ->orderby('p.producto','asc')
+                        ->limit(5)
+                        ->get();        
         }  
   
         $response = array();

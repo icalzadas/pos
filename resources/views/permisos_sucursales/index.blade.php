@@ -2,8 +2,7 @@
 
 @section('title', 'Permisos Sucursales')
 
-@section('content_header')
-    <h1>Permisos Sucursales</h1>
+@section('content_header')    
     <!--@if(session('message'))
         <div class="alert alert-success alert-block">
             <div class="row"> 
@@ -35,51 +34,68 @@
 @section('content')
     @include('permisos_sucursales/modalCreate')    
     @include('permisos_sucursales/modalDelete')
-    <div class="row p-1">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            <a href="#" data-toggle="modal" data-target="#modal_crear_permiso"><button class="btn btn-success"><i class="fas fa-store-alt-slash fa-1x"></i>&nbsp;Nuevo permiso sucursal</button></a>
+
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h1 class="card-title">Permisos Sucursales</h1>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
         </div>
-        
-    </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+            <div class="row p-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+                    <a href="#" data-toggle="modal" data-target="#modal_crear_permiso"><button class="btn btn-success"><i class="fas fa-store-alt-slash fa-1x"></i>&nbsp;Nuevo permiso sucursal</button></a>
+                </div>        
+            </div>    
+            <div class="row p-1">
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">            
+                    
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-bordered" id="tblPermisosSucursales">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" style="display:none;">ID Permiso</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Sucursal</th> 
+                                    <th scope="col">Opciones</th>	
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($permisos_sucursales as $p)
+                                    <tr>
+                                        <td style="display:none;">{{$p->id}}</td>
+                                        <td>{{$p->nick}}</td>
+                                        <td>{{$p->sucursal}}</td>                                                              
+
+                                        <td>
+                                            
+                                            <a href="#" data-toggle="modal" data-target="#modal_eliminar_permiso" data-id_permiso="{{$p->id}}">
+                                                <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
+                                            </a>
+                                            
+                                        </td>
+                                        
+                                    </tr>
+                                @endforeach					
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div><!--fin card body-->
+    </div> <!--fin card-->
+
     
-    <div class="row p-1">
-        
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">            
-            
-            <div class="table-responsive">
-				<table class="table table-sm table-striped table-bordered" id="tblPermisosSucursales">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col" style="display:none;">ID Permiso</th>
-							<th scope="col">Usuario</th>
-                            <th scope="col">Sucursal</th> 
-                            <th scope="col">Opciones</th>	
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($permisos_sucursales as $p)
-							<tr>
-								<td style="display:none;">{{$p->id}}</td>
-                                <td>{{$p->nick}}</td>
-                                <td>{{$p->sucursal}}</td>                                                              
-
-                                <td>
-                                    
-                                    <a href="#" data-toggle="modal" data-target="#modal_eliminar_permiso" data-id_permiso="{{$p->id}}">
-                                        <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
-                                    </a>
-                                    
-                                </td>
-								
-							</tr>
-						@endforeach					
-					</tbody>
-				</table>
-			</div>
-            
-        </div>
-
-    </div>
 @endsection
 
 @section('css')
@@ -104,7 +120,7 @@
             $('[data-toggle="tooltip"]').tooltip(); 
 
             var tblClientes = $('#tblPermisosSucursales').DataTable({
-                         
+                "dom": 'Bfrtipl',         
                 stateSave: true,
                 "language": {
                     "sProcessing":     "Procesando...",

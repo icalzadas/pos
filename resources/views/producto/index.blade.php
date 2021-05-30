@@ -2,8 +2,7 @@
 
 @section('title', 'Productos')
 
-@section('content_header')
-    <h1>Productos</h1>
+@section('content_header')    
     @if(session('message'))
         <div class="alert alert-success alert-block">
             <div class="row"> <!-- add no-gutters to make it narrower -->
@@ -36,85 +35,102 @@
     @include('producto/modalCreate')
     @include('producto/modalEdit')
     @include('producto/modalDelete')
-    <div class="row p-1">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            <a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fab fa-product-hunt fa-1x"></i>&nbsp;Nuevo Producto</button></a>
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h1 class="card-title">Productos</h1>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+            </div>
+            <!-- /.card-tools -->
         </div>
-        
-    </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+
+            <div class="row p-1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+                    <a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fab fa-product-hunt fa-1x"></i>&nbsp;Nuevo Producto</button></a>
+                </div>                
+            </div>    
+            <div class="row p-1">
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
+                    
+                    <!--<a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fas fa-file-alt fa-1x"></i>&nbsp;Nuevo Producto</button></a>&nbsp&nbsp;-->
+                    
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-bordered" id="tblProductos">
+                            <thead class="thead-dark">
+                                <tr>
+                                <th scope="col">Sucursal</th>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col" style="display:none;">ID Producto</th>
+                                    <th scope="col" style="display:none;">Codigo de barras</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">SKU</th>
+                                    <th scope="col">Precio Costo</th>
+                                    <th scope="col">Precio Venta</th>
+                                    <th scope="col">Precio Mayoreo</th>
+                                    <th scope="col">Minimo</th>
+                                    <th scope="col">Maximo</th>
+
+                                    <th scope="col">Talla</th>
+                                    <th scope="col">Modelo</th>
+                                    <th scope="col">Color</th>
+                                    <th scope="col">Estatus</th>
+                                    <th scope="col">Opciones</th>	
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($productos as $p)
+                                    <tr>
+                                        <td>{{$p->sucursal}}</td>
+                                        <td>{{$p->categoria}}</td>
+                                        <td style="display:none;">{{$p->id}}</td>
+                                        <td style="display:none;">{{$p->codigo_barras}}</td>
+                                        <td>{{$p->producto}}</td>
+                                        <td>{{$p->sku}}</td>
+                                        <td>{{$p->precio_costo}}</td>
+                                        <td>{{$p->precio_venta}}</td>
+                                        <td>{{$p->precio_mayoreo}}</td>
+                                        <td>{{$p->minimo}}</td>
+                                        <td>{{$p->maximo}}</td>
+                                        <td>{{$p->talla}}</td>
+                                        <td>{{$p->modelo}}</td>
+                                        <td>{{$p->color}}</td>
+                                        
+                                        @if($p->status==1)
+                                        <td>Activo</td>
+                                        @else
+                                        <td>Inactivo</td>
+                                        @endif
+
+                                        <td>
+                                            <a href="#" data-toggle="modal" data-target="#modal_editar_producto" data-id_producto="{{$p->id}}" data-id_sucursal="{{$p->id_sucursal}}" data-id_categoria="{{$p->id_categoria}}" data-producto="{{$p->producto}}" data-sku="{{$p->sku}}" data-codigo_barras="{{$p->codigo_barras}}" data-precio_costo="{{$p->precio_costo}}" data-precio_venta="{{$p->precio_venta}}" data-precio_mayoreo="{{$p->precio_mayoreo}}" data-minimo="{{$p->minimo}}" data-maximo="{{$p->maximo}}" data-talla="{{$p->talla}}" data-modelo="{{$p->modelo}}" data-color="{{$p->color}}" data-cantidad="{{$p->cantidad_inicial}}" data-status="{{$p->status}}">
+                                                <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
+                                            </a>
+                                            <a href="#" data-toggle="modal" data-target="#modal_eliminar_producto" data-id_producto="{{$p->id}}">
+                                                <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
+                                            </a>
+                                            
+                                        </td>
+                                        
+                                    </tr>
+                                @endforeach					
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+
+        </div><!--fin card body-->
+    </div> <!--fin card-->
+
     
-    <div class="row p-1">
-        
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xl-12">
-            
-            <!--<a href="#" data-toggle="modal" data-target="#modal_crear_producto"><button class="btn btn-success"><i class="fas fa-file-alt fa-1x"></i>&nbsp;Nuevo Producto</button></a>&nbsp&nbsp;-->
-            
-            <div class="table-responsive">
-				<table class="table table-sm table-striped table-bordered" id="tblProductos">
-					<thead class="thead-dark">
-						<tr>
-                        <th scope="col">Sucursal</th>
-                            <th scope="col">Categoria</th>
-							<th scope="col" style="display:none;">ID Producto</th>
-                            <th scope="col" style="display:none;">Codigo de barras</th>
-							<th scope="col">Producto</th>
-                            <th scope="col">SKU</th>
-                            <th scope="col">Precio Costo</th>
-                            <th scope="col">Precio Venta</th>
-                            <th scope="col">Precio Mayoreo</th>
-                            <th scope="col">Minimo</th>
-                            <th scope="col">Maximo</th>
-
-                            <th scope="col">Talla</th>
-                            <th scope="col">Modelo</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Estatus</th>
-							<th scope="col">Opciones</th>	
-						</tr>
-					</thead>
-					<tbody>
-						@foreach($productos as $p)
-							<tr>
-                                <td>{{$p->sucursal}}</td>
-                                <td>{{$p->categoria}}</td>
-								<td style="display:none;">{{$p->id}}</td>
-                                <td style="display:none;">{{$p->codigo_barras}}</td>
-                                <td>{{$p->producto}}</td>
-                                <td>{{$p->sku}}</td>
-                                <td>{{$p->precio_costo}}</td>
-                                <td>{{$p->precio_venta}}</td>
-                                <td>{{$p->precio_mayoreo}}</td>
-                                <td>{{$p->minimo}}</td>
-                                <td>{{$p->maximo}}</td>
-                                <td>{{$p->talla}}</td>
-                                <td>{{$p->modelo}}</td>
-                                <td>{{$p->color}}</td>
-                                
-                                @if($p->status==1)
-                                <td>Activo</td>
-                                @else
-                                <td>Inactivo</td>
-                                @endif
-
-                                <td>
-                                    <a href="#" data-toggle="modal" data-target="#modal_editar_producto" data-id_producto="{{$p->id}}" data-id_sucursal="{{$p->id_sucursal}}" data-id_categoria="{{$p->id_categoria}}" data-producto="{{$p->producto}}" data-sku="{{$p->sku}}" data-codigo_barras="{{$p->codigo_barras}}" data-precio_costo="{{$p->precio_costo}}" data-precio_venta="{{$p->precio_venta}}" data-precio_mayoreo="{{$p->precio_mayoreo}}" data-minimo="{{$p->minimo}}" data-maximo="{{$p->maximo}}" data-talla="{{$p->talla}}" data-modelo="{{$p->modelo}}" data-color="{{$p->color}}" data-cantidad="{{$p->cantidad_inicial}}" data-status="{{$p->status}}">
-                                        <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
-                                    </a>
-                                    <a href="#" data-toggle="modal" data-target="#modal_eliminar_producto" data-id_producto="{{$p->id}}">
-                                        <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
-                                    </a>
-                                    
-                                </td>
-								
-							</tr>
-						@endforeach					
-					</tbody>
-				</table>
-			</div>
-            
-        </div>
-
-    </div>
 @endsection
 
 @section('css')
@@ -157,7 +173,7 @@
             $('[data-toggle="tooltip"]').tooltip(); 
 
             var tblProductos = $('#tblProductos').DataTable({
-                         
+                "dom": 'Bfrtipl',         
                 //stateSave: true,
                 "language": {
                     "sProcessing":     "Procesando...",
