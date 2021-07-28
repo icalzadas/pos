@@ -82,17 +82,16 @@
                                         <td>{{$u->email}}</td> 
 
                                         <td>{{$u->telefono}}</td>                                                                                            
-                                        <td>{{$u->getRoleNames()[0]}}</td>
+                                        <td>{{$u->getRoleNames()[0]}}</td>                                        
                                         <td>
                                             <a href="#" data-toggle="modal" data-target="#modal_editar_user" data-id_user="{{$u->id}}" data-name="{{$u->name}}" data-nick="{{$u->nick}}" data-email="{{$u->email}}" data-telefono="{{$u->telefono}}" data-password="{{$u->password}}" data-image="{{$u->image}}" data-id_rol="{{ $u->roles->first()->id }}">
-                                                <button class="btn btn-square" title="Editar"><i class="fas fa-edit fa-1x"></i></button>
+                                                <button class="btn btn-square" title="Editar" ><i class="fas fa-edit fa-1x"></i></button>
                                             </a>
                                             <a href="#" data-toggle="modal" data-target="#modal_eliminar_user" data-id_user="{{$u->id}}">
-                                                <button class="btn btn-square" title="Eliminar"><i class="fas fa-trash-alt fa-1x"></i></button>
+                                                <button class="btn btn-square" title="Eliminar" ><i class="fas fa-trash-alt fa-1x"></i></button>
                                             </a>
                                             
-                                        </td>
-                                        
+                                        </td>                                        
                                     </tr>
                                 @endforeach					
                             </tbody>

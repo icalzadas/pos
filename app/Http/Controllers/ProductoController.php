@@ -294,21 +294,7 @@ class ProductoController extends Controller
                         ->limit(5)
                         ->get();             
         
-        }else{  
-           /*$productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
-                        ->where('id_sucursal',$id_sucursal)
-                        ->where('producto', 'like', '%' .$search . '%')
-                        ->orWhere('sku','like','%'.$search.'%')
-                        ->orWhere('codigo_barras','like','%'.$search.'%')
-                        ->limit(5)
-                        ->get(); */
-                        
-            /*$productos = Productos::orderby('producto','asc')->select(DB::raw("concat(producto,'(sku:',sku,')') as producto"),'id')
-                        ->where('id_sucursal',$id_sucursal)
-                        ->where('status',1)
-                        ->whereRaw("( producto like '%".$search."%' or sku like '%".$search."%' or codigo_barras like '%".$search."%' )")                        
-                        ->limit(5)
-                        ->get();*/                                
+        }else{                                             
                         
             $productos = DB::table('productos as p')
                         ->select(DB::raw("concat(p.producto,'(sku:',p.sku,')') as producto"),'p.id')
