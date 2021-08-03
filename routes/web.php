@@ -86,3 +86,11 @@ Route::post('cajas/eliminar', [App\Http\Controllers\CajasCobroController::class,
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
